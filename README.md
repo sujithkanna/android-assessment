@@ -1,4 +1,4 @@
-# Android Interview Assignment
+# TicketSwap Android Assessment
 You are probably familiar with the Spotify service. It’s the biggest music streaming platform in the world and they have a nice and well documented API that you will be using in this assignment.
 
 We ask you to implement an Android application that performs login and search with Spotify and some further data.
