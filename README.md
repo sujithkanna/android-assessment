@@ -40,7 +40,7 @@ https://beta.developer.spotify.com/documentation/web-api/reference/tracks/
 https://beta.developer.spotify.com/documentation/web-api/reference/artists/
 
 ## Submission
-Please make a PR to this repo with which we can easily build locally and test out ourselves.
+Please provide a zip of the source code with which we can easily build locally and test out ourselves.
 
 ## General notes
 - Write the solution in Kotlin.
