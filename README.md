@@ -5,7 +5,7 @@ We tried to create an Android application which would allow us to log in and sea
 
 We want the app to consist of the following parts:
 
-- Login Screen
+- Login Screen - this screen is already done
 - Search Screen - consisting of a search bar and a list of results
 - Artist or Track page - consisting of the name, image, and 2 or more interesting fields from either an artist or a track item (you don’t have to support both types)
 
@@ -33,11 +33,13 @@ We want the app to consist of the following parts:
 - We would like to see how you write unit tests for at least one class
 - We recommend you to test your solution on real hardware.
 
-Spotify API reference:
+### Spotify API reference:
 
 https://beta.developer.spotify.com/documentation/web-api/reference/search/search/
 https://beta.developer.spotify.com/documentation/web-api/reference/tracks/
 https://beta.developer.spotify.com/documentation/web-api/reference/artists/
+
+If you want to use the API key provided in this assessment you need to send us your SHA1 Fingerprint from the Android Keystore. You can also use your own Spotify API key.
 
 ## Submission
 Please provide a zip of the source code with which we can easily build locally and test out ourselves.
