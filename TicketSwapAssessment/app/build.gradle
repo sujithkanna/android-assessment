@@ -14,7 +14,7 @@ android {
         targetSdkVersion Dependencies.targetSdkVersion
         versionCode Dependencies.versionCode
         versionName Dependencies.versionName
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         javaCompileOptions {
             annotationProcessorOptions {
                 includeCompileClasspath false
@@ -39,9 +39,8 @@ dependencies {
     implementation Libs.kotlin_std
     implementation Libs.kotlin_reflect
     implementation Libs.appcompat
-    implementation Libs.support
+    implementation Libs.recyclerView
     implementation Libs.constraint_layout
-    implementation Libs.design
 
     // Network
     implementation Square.retrofit

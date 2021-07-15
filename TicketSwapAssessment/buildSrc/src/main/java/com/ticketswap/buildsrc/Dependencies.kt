@@ -1,21 +1,19 @@
 object Version {
     const val kotlinVersion = "1.5.10"
     const val androidGradleVersion = "4.0.1"
-    const val constraintLayoutVersion = "1.1.3"
-    const val multiDescVersion = "1.0.3"
+    const val constraintLayoutVersion = "2.0.4"
+    const val recyclerViewVersion = "1.2.1"
 
     // Compile dependencies
-    const val supportVersion = "28.0.0-rc01"
+    const val appCompatVersion = "1.3.0"
     const val daggerVersion = "2.35"
 
     // Unit tests
     const val mockitoVersion = "2.13.0"
-    const val googleServices = "4.0.0"
 
     //Rx Versions
     const val rxJava2 = "2.1.9"
     const val rxAndroid = "2.0.1"
-    const val rxKotlin = "2.1.0"
 
     // Spotify
     const val spotifyVersion = "1.1.0"
@@ -28,10 +26,6 @@ object Version {
     const val retrofitVersion = "2.3.0"
     const val okhttpVersion = "3.11.0"
     const val timberVersion = "4.6.0"
-
-    // Android Architecture
-    val lifecycleVersion = "1.1.1"
-    val navigationVersion = "1.0.0-alpha06"
 }
 
 object Dependencies {
@@ -39,7 +33,6 @@ object Dependencies {
     val androidGradle = "com.android.tools.build:gradle:${Version.androidGradleVersion}"
     val kotlinGradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Version.kotlinVersion}"
 
-    val buildToolsVersion = "27.0.3"
     val minSdkVersion = 23
     val targetSdkVersion = 28
     val compileSdkVersion = 28
@@ -51,11 +44,9 @@ object Dependencies {
 object Libs {
     val kotlin_std = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${Version.kotlinVersion}"
     val kotlin_reflect = "org.jetbrains.kotlin:kotlin-reflect:${Version.kotlinVersion}"
-    val appcompat = "com.android.support:appcompat-v7:${Version.supportVersion}"
-    val support = "com.android.support:support-v4:${Version.supportVersion}"
-    val constraint_layout = "com.android.support.constraint:constraint-layout:${Version.constraintLayoutVersion}"
-    val design = "com.android.support:design:${Version.supportVersion}"
-    val supportAnnotation = "com.android.support:support-annotations:${Version.supportVersion}"
+    val appcompat = "androidx.appcompat:appcompat:${Version.appCompatVersion}"
+    val constraint_layout = "androidx.constraintlayout:constraintlayout:${Version.constraintLayoutVersion}"
+    val recyclerView = "androidx.recyclerview:recyclerview:${Version.recyclerViewVersion}"
 }
 
 object Spotify {
@@ -93,9 +84,4 @@ object TestLibs {
     val mockito = "org.mockito:mockito-core:${Version.mockitoVersion}"
     val mockito_kotlin = "com.nhaarman:mockito-kotlin:1.5.0"
     val espresso = "com.android.support.test.espresso:espresso-core:3.0.1"
-}
-
-object ArchComponents{
-    val navigationFragment = "android.arch.navigation:navigation-fragment-ktx:${Version.navigationVersion}"
-    val navigationUi = "android.arch.navigation:navigation-ui-ktx:${Version.navigationVersion}"
 }

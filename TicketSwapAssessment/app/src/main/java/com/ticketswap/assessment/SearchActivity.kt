@@ -1,7 +1,7 @@
 package com.ticketswap.assessment
 
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.ticketswap.assessment.spotify.SpotifyApi
 import dagger.android.support.DaggerAppCompatActivity
 import io.reactivex.schedulers.Schedulers
@@ -38,7 +38,8 @@ class SearchActivity : DaggerAppCompatActivity() {
         }
 
         recycler.adapter = adapter
-        recycler.layoutManager = LinearLayoutManager(this)
+        recycler.layoutManager =
+            LinearLayoutManager(this)
     }
 
     // Search
