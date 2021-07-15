@@ -1,12 +1,12 @@
 object Version {
-    const val kotlinVersion = "1.2.71"
-    const val androidGradleVersion = "3.2.0"
+    const val kotlinVersion = "1.5.10"
+    const val androidGradleVersion = "4.0.1"
     const val constraintLayoutVersion = "1.1.3"
     const val multiDescVersion = "1.0.3"
 
     // Compile dependencies
     const val supportVersion = "28.0.0-rc01"
-    const val daggerVersion = "2.14.1"
+    const val daggerVersion = "2.35"
 
     // Unit tests
     const val mockitoVersion = "2.13.0"
