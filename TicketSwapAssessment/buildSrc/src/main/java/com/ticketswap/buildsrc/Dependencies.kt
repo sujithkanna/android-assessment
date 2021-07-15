@@ -6,7 +6,7 @@ object Version {
 
     // Compile dependencies
     const val appCompatVersion = "1.3.0"
-    const val daggerVersion = "2.35"
+    const val hiltVersion = "2.35"
 
     // Unit tests
     const val mockitoVersion = "2.13.0"
@@ -32,6 +32,7 @@ object Dependencies {
 
     val androidGradle = "com.android.tools.build:gradle:${Version.androidGradleVersion}"
     val kotlinGradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Version.kotlinVersion}"
+    val hiltGradlePlugin = "com.google.dagger:hilt-android-gradle-plugin:${Version.hiltVersion}"
 
     val minSdkVersion = 23
     val targetSdkVersion = 28
@@ -71,11 +72,8 @@ object Reactive {
 }
 
 object Di {
-    val dagger = "com.google.dagger:dagger:${Version.daggerVersion}"
-    val dagger_android = "com.google.dagger:dagger-android:${Version.daggerVersion}"
-    val dagger_android_support = "com.google.dagger:dagger-android-support:${Version.daggerVersion}"
-    val dagger_android_processor = "com.google.dagger:dagger-android-processor:${Version.daggerVersion}"
-    val dagger_compiler = "com.google.dagger:dagger-compiler:${Version.daggerVersion}"
+    val hiltAndroid = "com.google.dagger:hilt-android:${Version.hiltVersion}"
+    val hiltCompiler = "com.google.dagger:hilt-compiler:${Version.hiltVersion}"
 }
 
 object TestLibs {

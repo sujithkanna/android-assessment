@@ -8,19 +8,22 @@ import com.ticketswap.assessment.BuildConfig
 import com.ticketswap.assessment.PrefStore
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import javax.inject.Singleton
 
 @Module
+@InstallIn(SingletonComponent::class)
 class AppModule {
     @Provides
-    fun provideContext(application: App): Context = application.applicationContext
-
-    @Provides
-    fun provideRetrofit(context: Context): Retrofit {
+    @Singleton
+    fun provideRetrofit(@ApplicationContext context: Context): Retrofit {
         val httpLoggingInterceptor = HttpLoggingInterceptor()
         val logs = if (BuildConfig.DEBUG) {
             HttpLoggingInterceptor.Level.BODY
