@@ -1,15 +1,17 @@
 package com.ticketswap.assessment
 
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.ticketswap.assessment.spotify.SpotifyApi
-import dagger.android.support.DaggerAppCompatActivity
+import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_search.*
 import retrofit2.Retrofit
 import javax.inject.Inject
 
-class SearchActivity : DaggerAppCompatActivity() {
+@AndroidEntryPoint
+class SearchActivity : AppCompatActivity() {
 
     @Inject
     lateinit var retrofit: Retrofit
@@ -38,7 +40,8 @@ class SearchActivity : DaggerAppCompatActivity() {
         }
 
         recycler.adapter = adapter
-        recycler.layoutManager = LinearLayoutManager(this)
+        recycler.layoutManager =
+            LinearLayoutManager(this)
     }
 
     // Search

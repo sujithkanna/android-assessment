@@ -6,6 +6,8 @@ apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'kotlin-kapt'
 
+apply plugin: 'dagger.hilt.android.plugin'
+
 android {
     compileSdkVersion Dependencies.compileSdkVersion
     defaultConfig {
@@ -14,7 +16,7 @@ android {
         targetSdkVersion Dependencies.targetSdkVersion
         versionCode Dependencies.versionCode
         versionName Dependencies.versionName
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         javaCompileOptions {
             annotationProcessorOptions {
                 includeCompileClasspath false
@@ -39,9 +41,8 @@ dependencies {
     implementation Libs.kotlin_std
     implementation Libs.kotlin_reflect
     implementation Libs.appcompat
-    implementation Libs.support
+    implementation Libs.recyclerView
     implementation Libs.constraint_layout
-    implementation Libs.design
 
     // Network
     implementation Square.retrofit
@@ -60,12 +61,9 @@ dependencies {
     // Log
     implementation Square.timber
 
-    // Dagger
-    implementation Di.dagger
-    implementation Di.dagger_android
-    implementation Di.dagger_android_support
-    kapt Di.dagger_compiler
-    kapt Di.dagger_android_processor
+    // Hilt
+    implementation Di.hiltAndroid
+    kapt Di.hiltCompiler
 
     // Spotify
     implementation Spotify.spotify
