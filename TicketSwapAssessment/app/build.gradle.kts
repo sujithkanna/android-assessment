@@ -20,6 +20,7 @@ android {
                 includeCompileClasspath = false
             }
         }
+        buildConfigString("SPOTIFY_API_KEY", "84ea753e599142b8bace9b63d153227b")
     }
 
     compileOptions {
@@ -44,7 +45,9 @@ dependencies {
     implementation(Libs.kotlin_reflect)
     implementation(Libs.appcompat)
     implementation(Libs.recyclerView)
-    implementation(Libs.constraint_layout)
+    implementation(Libs.constraintLayout)
+    implementation(Libs.coreKts)
+    implementation(Libs.androidKts)
 
     // Network
     implementation(Square.retrofit)
@@ -65,6 +68,7 @@ dependencies {
 
     // Hilt
     implementation(Di.hiltAndroid)
+    implementation(Libs.material)
     kapt(Di.hiltCompiler)
 
     // Spotify
@@ -77,3 +81,15 @@ dependencies {
     testImplementation(TestLibs.mockito_kotlin)
     androidTestImplementation(TestLibs.espresso)
 }
+
+fun com.android.build.gradle.internal.dsl.BaseFlavor.buildConfigBoolean(
+    name: String,
+    value: Boolean
+) =
+    buildConfigField("Boolean", name, value.toString())
+
+fun com.android.build.gradle.internal.dsl.BaseFlavor.buildConfigString(
+    name: String,
+    value: String
+) =
+    buildConfigField("String", name, "\"$value\"")

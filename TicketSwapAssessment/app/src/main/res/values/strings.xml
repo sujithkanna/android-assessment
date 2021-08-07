@@ -2,4 +2,6 @@
     <string name="app_name">Spotify App</string>
     <string name="com_spotify_sdk_redirect_scheme">ticketswap-spotify</string>
     <string name="com_spotify_sdk_redirect_host">ticketswap-spotify</string>
+    <string name="spotify_login_failed">Unable to login to Spotify</string>
+    <string name="try_again">Try again!</string>
 </resources>

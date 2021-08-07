@@ -1,5 +1,6 @@
-package com.ticketswap.assessment.spotify
+package com.ticketswap.assessment.api
 
+import com.ticketswap.assessment.spotify.SearchResponse
 import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Query

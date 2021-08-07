@@ -3,6 +3,9 @@ object Version {
     const val androidGradleVersion = "4.0.1"
     const val constraintLayoutVersion = "2.0.4"
     const val recyclerViewVersion = "1.2.1"
+    const val coreKtxVersion = "1.6.0"
+    const val androidKtxVersion = "1.3.1"
+    const val materialVersion = "1.4.0"
 
     // Compile dependencies
     const val appCompatVersion = "1.3.0"
@@ -31,7 +34,8 @@ object Version {
 object Dependencies {
 
     const val androidGradle = "com.android.tools.build:gradle:${Version.androidGradleVersion}"
-    const val hiltGradlePlugin = "com.google.dagger:hilt-android-gradle-plugin:${Version.hiltVersion}"
+    const val hiltGradlePlugin =
+        "com.google.dagger:hilt-android-gradle-plugin:${Version.hiltVersion}"
 
     const val minSdkVersion = 23
     const val targetSdkVersion = 28
@@ -45,8 +49,12 @@ object Libs {
     const val kotlin_std = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${Version.kotlinVersion}"
     const val kotlin_reflect = "org.jetbrains.kotlin:kotlin-reflect:${Version.kotlinVersion}"
     const val appcompat = "androidx.appcompat:appcompat:${Version.appCompatVersion}"
-    const val constraint_layout = "androidx.constraintlayout:constraintlayout:${Version.constraintLayoutVersion}"
+    const val constraintLayout =
+        "androidx.constraintlayout:constraintlayout:${Version.constraintLayoutVersion}"
     const val recyclerView = "androidx.recyclerview:recyclerview:${Version.recyclerViewVersion}"
+    const val coreKts = "androidx.core:core-ktx:${Version.coreKtxVersion}"
+    const val androidKts = "androidx.activity:activity-ktx:${Version.androidKtxVersion}"
+    const val material = "com.google.android.material:material:${Version.materialVersion}"
 }
 
 object Spotify {
@@ -56,12 +64,15 @@ object Spotify {
 object Square {
     const val picasso = "com.squareup.picasso:picasso:${Version.picassoVersion}"
     const val retrofit = "com.squareup.retrofit2:retrofit:${Version.retrofitVersion}"
-    const val moshi_retrofit = "com.squareup.retrofit2:converter-moshi:${Version.moshiConverterVersion}"
-    const val rxadapter = "com.jakewharton.retrofit:retrofit2-rxjava2-adapter:${Version.rxAdapterVersion}"
+    const val moshi_retrofit =
+        "com.squareup.retrofit2:converter-moshi:${Version.moshiConverterVersion}"
+    const val rxadapter =
+        "com.jakewharton.retrofit:retrofit2-rxjava2-adapter:${Version.rxAdapterVersion}"
     const val moshi = "com.squareup.moshi:moshi:${Version.moshiVersion}"
     const val moshi_kotlin = "com.squareup.moshi:moshi-kotlin:${Version.moshiVersion}"
     const val okhttp = "com.squareup.okhttp3:okhttp:${Version.okhttpVersion}"
-    const val okhttp_intercepter = "com.squareup.okhttp3:logging-interceptor:${Version.okhttpVersion}"
+    const val okhttp_intercepter =
+        "com.squareup.okhttp3:logging-interceptor:${Version.okhttpVersion}"
     const val timber = "com.jakewharton.timber:timber:${Version.timberVersion}"
 }
 

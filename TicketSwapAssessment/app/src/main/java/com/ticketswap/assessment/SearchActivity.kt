@@ -3,7 +3,7 @@ package com.ticketswap.assessment
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.ticketswap.assessment.spotify.SpotifyApi
+import com.ticketswap.assessment.api.SpotifyApi
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_search.*
@@ -13,8 +13,8 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class SearchActivity : AppCompatActivity() {
 
-    @Inject
-    lateinit var retrofit: Retrofit
+    /*@Inject
+    lateinit var retrofit: Retrofit*/
 
     lateinit var spotifyApi: SpotifyApi
 
@@ -30,8 +30,8 @@ class SearchActivity : AppCompatActivity() {
     // Setup
 
     fun createUtils() {
-        spotifyApi = retrofit.create(SpotifyApi::class.java)
-        adapter = RecyclerAdapter()
+        /*spotifyApi = retrofit.create(SpotifyApi::class.java)
+        adapter = RecyclerAdapter()*/
     }
 
     fun setupUI() {
