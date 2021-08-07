@@ -3,7 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable/ic_spotify.xml" value="0.3435185185185185" />
+        <entry key="app/src/main/res/drawable/pill_button.xml" value="0.3435185185185185" />
         <entry key="app/src/main/res/layout/activity_dashboard.xml" value="0.3115942028985507" />
+        <entry key="app/src/main/res/layout/fragment_login.xml" value="0.165" />
         <entry key="app/src/main/res/layout/fragment_search.xml" value="0.3115942028985507" />
       </map>
     </option>

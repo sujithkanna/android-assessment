@@ -4,11 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.ticketswap.assessment.R
 import com.ticketswap.assessment.databinding.FragmentSearchBinding
+import com.ticketswap.assessment.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -20,19 +23,27 @@ class SearchFragment : Fragment() {
 
     private val searchViewModel: SearchViewModel by viewModels()
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedState: Bundle?
-    ): View {
-        binder = FragmentSearchBinding.inflate(inflater, container, false)
+    private val backToExit by lazy {
+        doubleBackExitStrategy(lifecycleScope) {
+            when (it) {
+                BackPress.LAST -> requireActivity().finish()
+                BackPress.FIRST -> showToast(R.string.press_again_to_exit, Toast.LENGTH_SHORT)
+            }
+        }
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, parent: ViewGroup?, state: Bundle?): View {
+        binder = FragmentSearchBinding.inflate(inflater, parent, false)
         return binder.root
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         if (!searchViewModel.isLoggedIn()) {
             navController.navigate(R.id.loginFragment)
         }
+
+        listenForBackPress(BackPressAction.create { backToExit.invoke() })
     }
 
 }
