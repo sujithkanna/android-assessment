@@ -7,6 +7,7 @@ object Version {
     const val androidKtxVersion = "1.3.1"
     const val fragmentKtxVersion = "2.3.5"
     const val uiKtxVersion = "2.3.5"
+    const val liveDataKtxVersion = "2.2.0"
     const val materialVersion = "1.4.0"
 
     // Compile dependencies
@@ -59,6 +60,7 @@ object Libs {
     const val androidKts = "androidx.activity:activity-ktx:${Version.androidKtxVersion}"
     const val uiKtx = "androidx.navigation:navigation-ui-ktx:${Version.fragmentKtxVersion}"
     const val fragmentKtx = "androidx.navigation:navigation-fragment-ktx:${Version.uiKtxVersion}"
+    const val liveDataKtx = "androidx.lifecycle:lifecycle-livedata-ktx:${Version.liveDataKtxVersion}"
 }
 
 object Spotify {

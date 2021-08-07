@@ -51,6 +51,7 @@ dependencies {
     implementation(Libs.uiKtx)
     implementation(Libs.androidKts)
     implementation(Libs.fragmentKtx)
+    implementation(Libs.liveDataKtx)
 
     // Network
     implementation(Square.retrofit)

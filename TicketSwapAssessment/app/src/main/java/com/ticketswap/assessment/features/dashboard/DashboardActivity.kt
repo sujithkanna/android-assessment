@@ -23,6 +23,5 @@ class DashboardActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_host, navHost)
             .setPrimaryNavigationFragment(navHost).commit()
-
     }
 }

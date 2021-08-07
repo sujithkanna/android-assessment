@@ -1,12 +1,29 @@
 package com.ticketswap.assessment.api
 
+import com.ticketswap.assessment.di.SpotifyModule.Companion.NAMED_SPOTIFY_OKHTTP_CLIENT
 import com.ticketswap.assessment.spotify.SearchResponse
-import io.reactivex.Single
-import retrofit2.http.GET
-import retrofit2.http.Query
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import okhttp3.HttpUrl
+import okhttp3.OkHttpClient
+import javax.inject.Inject
+import javax.inject.Named
 
+class SpotifyApi @Inject constructor(
+    @Named(NAMED_SPOTIFY_OKHTTP_CLIENT) client: OkHttpClient
+) : HttpBuilder(client, SPOTIFY_API) {
 
-interface SpotifyApi {
-    @GET("search")
-    fun searchSpotify(@Query("q") query: String, @Query("type") type: String): Single<SearchResponse>
+    @ExperimentalCoroutinesApi
+    suspend fun search(query: String, type: String = SEARCH_TYPE): SearchResponse? {
+        val url: HttpUrl = newHttpBuilder("search")
+            .addQueryParameter("q", query)
+            .addQueryParameter("type", type)
+            .build()
+        val request = newRequest().url(url).build()
+        return execute<SearchResponse>(request)
+    }
+
+    companion object {
+        const val SEARCH_TYPE = "album,track"
+        const val SPOTIFY_API = "https://api.spotify.com/v1/"
+    }
 }

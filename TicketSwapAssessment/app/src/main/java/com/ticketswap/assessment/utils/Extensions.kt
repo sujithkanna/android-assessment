@@ -5,6 +5,14 @@ import androidx.activity.OnBackPressedCallback
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
+import com.squareup.moshi.Moshi
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.suspendCancellableCoroutine
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.Response
+import java.io.IOException
+import kotlin.coroutines.resumeWithException
 
 fun <T> MutableLiveData<T>.asLiveData(): LiveData<T> = this
 
@@ -20,4 +28,59 @@ fun Fragment.showToast(@StringRes text: Int, duration: Int) {
 
 fun Fragment.listenForBackPress(callback: OnBackPressedCallback) {
     requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
+}
+
+// https://github.com/gildor/kotlin-coroutines-okhttp/blob/master/src/main/kotlin/ru/gildor/coroutines/okhttp/CallAwait.kt
+@ExperimentalCoroutinesApi
+suspend fun Call.await(recordStack: Boolean = true): Response {
+    val callStack = if (recordStack) {
+        IOException().apply {
+            // Remove unnecessary lines from stacktrace
+            // This doesn't remove await$default, but better than nothing
+            stackTrace = stackTrace.copyOfRange(1, stackTrace.size)
+        }
+    } else null
+
+    return suspendCancellableCoroutine { continuation ->
+        enqueue(object : Callback {
+            override fun onResponse(call: Call, response: Response) {
+                continuation.resume(response, null)
+            }
+
+            override fun onFailure(call: Call, e: IOException) {
+                if (continuation.isCancelled) return
+                callStack?.initCause(e)
+                continuation.resumeWithException(callStack ?: e)
+            }
+        })
+
+        continuation.invokeOnCancellation {
+            try {
+                cancel()
+            } catch (ex: Throwable) {
+                //Ignore cancel exception
+            }
+        }
+    }
+}
+
+@ExperimentalCoroutinesApi
+suspend fun <T> Moshi.fromJsonAwait(response: Response, clazz: Class<T>): T? {
+    return suspendCancellableCoroutine { continuation ->
+        try {
+            val adapter = this.adapter(clazz)
+            val responseString = adapter.fromJsonValue(response.body()!!.string())
+            response.closeSafely()
+            continuation.resume(responseString, {})
+        } catch (e: Exception) {
+            continuation.resumeWithException(e)
+        }
+    }
+}
+
+fun Response.closeSafely() {
+    try {
+        close()
+    } catch (e: Exception) {
+    }
 }
