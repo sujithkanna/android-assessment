@@ -1,21 +1,24 @@
 package com.ticketswap.assessment.features.login
 
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
-import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.google.android.material.snackbar.Snackbar
 import com.spotify.sdk.android.authentication.AuthenticationClient
 import com.ticketswap.assessment.R
-import com.ticketswap.assessment.databinding.ActivityLoginBinding
+import com.ticketswap.assessment.databinding.FragmentLoginBinding
 import com.ticketswap.assessment.utils.observeNotNull
 import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
-class LoginActivity : AppCompatActivity() {
+class LoginFragment : Fragment() {
 
-    private lateinit var binder: ActivityLoginBinding
+    private lateinit var binder: FragmentLoginBinding
     private val loginViewModel: LoginViewModel by viewModels()
 
     private val loginResultLauncher = registerForActivityResult(StartActivityForResult()) {
@@ -23,13 +26,19 @@ class LoginActivity : AppCompatActivity() {
         loginViewModel.processLoginResponse(response)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binder = ActivityLoginBinding.inflate(layoutInflater)
-        setContentView(binder.root)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binder = FragmentLoginBinding.inflate(inflater, container, false)
+        return binder.root
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         loginViewModel.spotifyAuthRequest.observeNotNull(this, {
-            val intent = AuthenticationClient.createLoginActivityIntent(this, it)
+            val intent = AuthenticationClient.createLoginActivityIntent(activity, it)
             loginResultLauncher.launch(intent)
         })
 

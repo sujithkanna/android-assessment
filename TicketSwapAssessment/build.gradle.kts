@@ -8,7 +8,7 @@ buildscript {
     }
     dependencies {
         classpath(Dependencies.androidGradle)
-        classpath(kotlin("gradle-plugin", version = Version.kotlinVersion))
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.21")
         classpath(Dependencies.hiltGradlePlugin)
 
         // NOTE: Do not place your application dependencies here; they belong

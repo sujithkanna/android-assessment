@@ -46,8 +46,11 @@ dependencies {
     implementation(Libs.appcompat)
     implementation(Libs.recyclerView)
     implementation(Libs.constraintLayout)
-    implementation(Libs.coreKts)
+    implementation(Libs.coreKtx)
+    implementation(Libs.material)
+    implementation(Libs.uiKtx)
     implementation(Libs.androidKts)
+    implementation(Libs.fragmentKtx)
 
     // Network
     implementation(Square.retrofit)
@@ -68,7 +71,7 @@ dependencies {
 
     // Hilt
     implementation(Di.hiltAndroid)
-    implementation(Libs.material)
+    implementation("androidx.legacy:legacy-support-v4:1.0.0")
     kapt(Di.hiltCompiler)
 
     // Spotify

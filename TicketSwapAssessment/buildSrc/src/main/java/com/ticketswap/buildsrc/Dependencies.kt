@@ -5,6 +5,8 @@ object Version {
     const val recyclerViewVersion = "1.2.1"
     const val coreKtxVersion = "1.6.0"
     const val androidKtxVersion = "1.3.1"
+    const val fragmentKtxVersion = "2.3.5"
+    const val uiKtxVersion = "2.3.5"
     const val materialVersion = "1.4.0"
 
     // Compile dependencies
@@ -52,9 +54,11 @@ object Libs {
     const val constraintLayout =
         "androidx.constraintlayout:constraintlayout:${Version.constraintLayoutVersion}"
     const val recyclerView = "androidx.recyclerview:recyclerview:${Version.recyclerViewVersion}"
-    const val coreKts = "androidx.core:core-ktx:${Version.coreKtxVersion}"
-    const val androidKts = "androidx.activity:activity-ktx:${Version.androidKtxVersion}"
+    const val coreKtx = "androidx.core:core-ktx:${Version.coreKtxVersion}"
     const val material = "com.google.android.material:material:${Version.materialVersion}"
+    const val androidKts = "androidx.activity:activity-ktx:${Version.androidKtxVersion}"
+    const val uiKtx = "androidx.navigation:navigation-ui-ktx:${Version.fragmentKtxVersion}"
+    const val fragmentKtx = "androidx.navigation:navigation-fragment-ktx:${Version.uiKtxVersion}"
 }
 
 object Spotify {
