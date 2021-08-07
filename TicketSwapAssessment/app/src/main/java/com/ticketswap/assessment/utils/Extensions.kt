@@ -20,6 +20,11 @@ fun <T> LiveData<T>.observeNotNull(lifecycleOwner: LifecycleOwner, observer: Obs
     this.observe(lifecycleOwner, { it?.let { it1 -> observer.onChanged(it1) } })
 }
 
+fun <T> LiveData<T>.observeOnce(lifecycleOwner: LifecycleOwner, observer: Observer<T>) {
+    if (this.hasActiveObservers()) return
+    this.observe(lifecycleOwner, observer)
+}
+
 fun Fragment.showToast(@StringRes text: Int, duration: Int) {
     activity?.let {
         Toast.makeText(it, text, duration).show()
