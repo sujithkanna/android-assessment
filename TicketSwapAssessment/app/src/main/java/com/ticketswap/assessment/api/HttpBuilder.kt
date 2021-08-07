@@ -12,7 +12,7 @@ abstract class HttpBuilder(val client: OkHttpClient, private val baseUrl: String
 
     fun newRequest(path: String = "") = Request.Builder().url(baseUrl + path)
 
-    fun newHttpBuilder(path: String = "") = HttpUrl.parse(baseUrl)!!.newBuilder()!!
+    fun newHttpBuilder(path: String = "") = HttpUrl.parse(baseUrl + path)!!.newBuilder()!!
 
     @ExperimentalCoroutinesApi
     @Throws(Exception::class)

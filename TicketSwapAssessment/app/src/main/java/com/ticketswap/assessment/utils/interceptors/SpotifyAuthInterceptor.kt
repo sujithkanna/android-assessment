@@ -20,6 +20,6 @@ class SpotifyAuthInterceptor @Inject constructor(private val userManager: UserMa
     }
 
     private fun Request.Builder.addAuthHeader(authToken: String?) = apply {
-        if (!authToken.isNullOrBlank()) addHeader(AUTH_HEADER, authToken)
+        if (!authToken.isNullOrBlank()) addHeader(AUTH_HEADER, "Bearer $authToken")
     }
 }
