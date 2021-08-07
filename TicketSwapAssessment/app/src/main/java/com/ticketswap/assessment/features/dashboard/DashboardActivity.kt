@@ -12,14 +12,17 @@ class DashboardActivity : AppCompatActivity() {
 
     private lateinit var binder: ActivityDashboardBinding
 
+    private lateinit var navHost: NavHostFragment
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binder = ActivityDashboardBinding.inflate(layoutInflater)
         setContentView(binder.root)
 
-        val host = NavHostFragment.create(R.navigation.search_navigation)
+        navHost = NavHostFragment.create(R.navigation.search_navigation)
         supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_host, host)
-            .setPrimaryNavigationFragment(host).commit()
+            .replace(R.id.fragment_host, navHost)
+            .setPrimaryNavigationFragment(navHost).commit()
+
     }
 }
