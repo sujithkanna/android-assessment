@@ -1,7 +1,7 @@
 package com.ticketswap.assessment.api
 
 import com.ticketswap.assessment.di.SpotifyModule.Companion.NAMED_SPOTIFY_OKHTTP_CLIENT
-import com.ticketswap.assessment.spotify.SearchResponse
+import com.ticketswap.assessment.models.SearchResponse
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient

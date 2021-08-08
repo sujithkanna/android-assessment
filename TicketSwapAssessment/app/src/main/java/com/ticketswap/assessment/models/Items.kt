@@ -1,4 +1,4 @@
-package com.ticketswap.assessment.spotify
+package com.ticketswap.assessment.models
 
 data class Items(
     val external_urls: Map<String, String>,
