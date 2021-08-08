@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.ticketswap.assessment.R
+import com.ticketswap.assessment.api.Action
 import com.ticketswap.assessment.databinding.FragmentSearchBinding
 import com.ticketswap.assessment.utils.*
 import dagger.hilt.android.AndroidEntryPoint
@@ -40,19 +41,23 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (!searchViewModel.isLoggedIn()) {
-            navController.navigate(R.id.loginFragment)
-        }
 
         listenForBackPress(BackPressAction.create { backToExit.invoke() })
 
         setupObservers()
 
-        searchViewModel.search("hello")
+        if (!searchViewModel.isLoggedIn()) {
+            navController.navigate(R.id.loginFragment)
+        } else {
+            searchViewModel.search("hello")
+        }
     }
 
     private fun setupObservers() {
         searchViewModel.searchResult.observeOnce(viewLifecycleOwner, {
+            if (it.action == Action.UNAUTHORISED) {
+                navController.navigate(R.id.loginFragment)
+            }
             Log.i("TestTest", it.action.toString())
         })
     }

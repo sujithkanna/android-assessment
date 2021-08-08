@@ -1,5 +1,6 @@
 package com.ticketswap.assessment.api
 
+import android.security.keystore.UserNotAuthenticatedException
 import kotlinx.coroutines.flow.flow
 
 inline fun <ResultType, RequestType> networkBoundResource(
@@ -11,9 +12,14 @@ inline fun <ResultType, RequestType> networkBoundResource(
     if (data != null) emit(Resource.Cache(data))
     try {
         emit(Resource.Loading())
-        saveFetchResult(fetch())
-        emit(Resource.Success(query()))
+        val response = fetch()
+        saveFetchResult(response)
+        emit(Resource.Success(response))
     } catch (e: Exception) {
-        emit(Resource.Error<ResultType>(e))
+        if (e is UserNotAuthenticatedException) {
+            emit(Resource.Error<ResultType>(Action.UNAUTHORISED, e))
+        } else {
+            emit(Resource.Error<ResultType>(Action.FAILED, e))
+        }
     }
 }

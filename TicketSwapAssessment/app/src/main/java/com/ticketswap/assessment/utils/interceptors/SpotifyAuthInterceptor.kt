@@ -9,10 +9,12 @@ import javax.inject.Inject
 class SpotifyAuthInterceptor @Inject constructor(private val userManager: UserManager) :
     Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
-        val builder = chain.request()
-            .newBuilder()
-            .addAuthHeader(userManager.spotifyAuthToken)
-        return chain.proceed(builder.build())
+        val builder = chain.request().newBuilder().addAuthHeader(userManager.spotifyAuthToken)
+        val response = chain.proceed(builder.build())
+        if (response.code() == 401) {
+            userManager.spotifyAuthToken = null
+        }
+        return response
     }
 
     companion object {

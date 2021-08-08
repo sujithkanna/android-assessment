@@ -69,14 +69,22 @@ suspend fun Call.await(recordStack: Boolean = true): Response {
     }
 }
 
-@ExperimentalCoroutinesApi
-suspend fun <T> Moshi.fromJsonAwait(response: Response, clazz: Class<T>): T? {
+@OptIn(ExperimentalCoroutinesApi::class)
+suspend fun Response.stringReadSuspend(): String {
+    return suspendCancellableCoroutine { continuation ->
+        val response = body()!!.string()
+        this.closeSafely()
+        continuation.resume(response) {}
+    }
+}
+
+@OptIn(ExperimentalCoroutinesApi::class)
+suspend fun <T> Moshi.fromJsonSuspend(response: String, clazz: Class<T>): T? {
     return suspendCancellableCoroutine { continuation ->
         try {
             val adapter = this.adapter(clazz)
-            val responseString = adapter.fromJsonValue(response.body()!!.string())
-            response.closeSafely()
-            continuation.resume(responseString, {})
+            val responseData = adapter.fromJson(response)
+            continuation.resume(responseData, {})
         } catch (e: Exception) {
             continuation.resumeWithException(e)
         }

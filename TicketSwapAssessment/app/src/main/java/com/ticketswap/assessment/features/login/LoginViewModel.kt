@@ -1,5 +1,6 @@
 package com.ticketswap.assessment.features.login
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.spotify.sdk.android.authentication.AuthenticationRequest
@@ -23,6 +24,9 @@ class LoginViewModel @Inject constructor(private val loginRepository: LoginRepos
     }
 
     fun processLoginResponse(response: AuthenticationResponse) {
+        if (response.error != null) {
+            Log.e("TestTest", response.error)
+        }
         _loginResult.value = when (response.type) {
             AuthenticationResponse.Type.TOKEN -> {
                 loginRepository.saveAccessToken(response.accessToken)
