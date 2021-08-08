@@ -1,8 +1,8 @@
 package com.ticketswap.assessment.features.search
 
 import androidx.lifecycle.*
+import com.ticketswap.assessment.utils.asLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
 
 @HiltViewModel

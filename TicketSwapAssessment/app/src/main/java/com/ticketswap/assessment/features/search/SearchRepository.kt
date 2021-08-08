@@ -14,7 +14,6 @@ class SearchRepository @Inject constructor(
 
     fun isLoggedIn() = !userManager.spotifyAuthToken.isNullOrBlank()
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     fun searchSong(query: String) = networkBoundResource(
         fetch = { spotifyApi.search(query) },
         query = { null },

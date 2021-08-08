@@ -1,7 +1,6 @@
 package com.ticketswap.assessment.features.search
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -44,21 +43,16 @@ class SearchFragment : Fragment() {
 
         listenForBackPress(BackPressAction.create { backToExit.invoke() })
 
-        setupObservers()
+        searchViewModel.searchResult.observeOnce(viewLifecycleOwner, {
+            if (it.action == Action.UNAUTHORISED) {
+                navController.navigate(R.id.loginFragment)
+            }
+        })
 
         if (!searchViewModel.isLoggedIn()) {
             navController.navigate(R.id.loginFragment)
         } else {
             searchViewModel.search("hello")
         }
-    }
-
-    private fun setupObservers() {
-        searchViewModel.searchResult.observeOnce(viewLifecycleOwner, {
-            if (it.action == Action.UNAUTHORISED) {
-                navController.navigate(R.id.loginFragment)
-            }
-            Log.i("TestTest", it.action.toString())
-        })
     }
 }

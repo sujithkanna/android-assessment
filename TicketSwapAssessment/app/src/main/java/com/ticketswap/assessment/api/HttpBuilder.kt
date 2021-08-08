@@ -16,7 +16,6 @@ abstract class HttpBuilder(val client: OkHttpClient, private val baseUrl: String
 
     fun newHttpBuilder(path: String = "") = HttpUrl.parse(baseUrl + path)!!.newBuilder()!!
 
-    @ExperimentalCoroutinesApi
     @Throws(Exception::class)
     suspend inline fun <reified T> execute(request: Request): T? {
         val response = client.newCall(request).await()

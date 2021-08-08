@@ -12,7 +12,6 @@ class SpotifyApi @Inject constructor(
     @Named(NAMED_SPOTIFY_OKHTTP_CLIENT) client: OkHttpClient
 ) : HttpBuilder(client, SPOTIFY_API) {
 
-    @ExperimentalCoroutinesApi
     suspend fun search(query: String, type: String = SEARCH_TYPE): SearchResponse? {
         val url: HttpUrl = newHttpBuilder("search")
             .addQueryParameter("q", query)
