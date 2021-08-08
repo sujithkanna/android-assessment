@@ -9,10 +9,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.*
 import com.ticketswap.assessment.R
 import com.ticketswap.assessment.api.Action
 import com.ticketswap.assessment.databinding.FragmentSearchBinding
 import com.ticketswap.assessment.utils.*
+import com.ticketswap.assessment.widgets.DividerItemDecoration
+import com.ticketswap.assessment.widgets.SizedDivider
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -23,6 +28,8 @@ class SearchFragment : Fragment() {
     private val navController by lazy { findNavController() }
 
     private val searchViewModel: SearchViewModel by viewModels()
+
+    private val searchAdapter by lazy { SearchAdapter() }
 
     private val backToExit by lazy {
         doubleBackExitStrategy(lifecycleScope) {
@@ -40,12 +47,19 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         listenForBackPress(BackPressAction.create { backToExit.invoke() })
+
+        binder.artistTracksList.also {
+            it.adapter = searchAdapter
+            it.layoutManager = LinearLayoutManager(context)
+        }
 
         searchViewModel.searchResult.observeOnce(viewLifecycleOwner, {
             if (it.action == Action.UNAUTHORISED) {
                 navController.navigate(R.id.loginFragment)
+            }
+            if (it.action == Action.SUCCESS) {
+                searchAdapter.setList(it.data!!)
             }
         })
 

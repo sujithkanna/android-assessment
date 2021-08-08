@@ -22,7 +22,7 @@ class SpotifyApi @Inject constructor(
     }
 
     companion object {
-        const val SEARCH_TYPE = "album,track"
+        const val SEARCH_TYPE = "track,artist"
         const val SPOTIFY_API = "https://api.spotify.com/v1/"
     }
 }

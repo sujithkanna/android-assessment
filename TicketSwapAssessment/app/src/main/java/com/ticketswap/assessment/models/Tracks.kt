@@ -3,7 +3,7 @@ package com.ticketswap.assessment.models
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class Artists(
+data class Tracks(
     val href: String?,
     val items: List<Item>?,
     val limit: Int?,

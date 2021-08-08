@@ -28,7 +28,7 @@ object Version {
     const val picassoVersion = "2.5.2"
     const val moshiConverterVersion = "2.3.0"
     const val rxAdapterVersion = "1.0.0"
-    const val moshiVersion = "1.5.0"
+    const val moshiVersion = "1.12.0"
     const val retrofitVersion = "2.3.0"
     const val okhttpVersion = "3.11.0"
     const val timberVersion = "4.6.0"
@@ -57,7 +57,7 @@ object Libs {
     const val recyclerView = "androidx.recyclerview:recyclerview:${Version.recyclerViewVersion}"
     const val coreKtx = "androidx.core:core-ktx:${Version.coreKtxVersion}"
     const val material = "com.google.android.material:material:${Version.materialVersion}"
-    const val androidKts = "androidx.activity:activity-ktx:${Version.androidKtxVersion}"
+    const val androidKtx = "androidx.activity:activity-ktx:${Version.androidKtxVersion}"
     const val uiKtx = "androidx.navigation:navigation-ui-ktx:${Version.fragmentKtxVersion}"
     const val fragmentKtx = "androidx.navigation:navigation-fragment-ktx:${Version.uiKtxVersion}"
     const val liveDataKtx = "androidx.lifecycle:lifecycle-livedata-ktx:${Version.liveDataKtxVersion}"
@@ -80,6 +80,7 @@ object Square {
     const val okhttp_intercepter =
         "com.squareup.okhttp3:logging-interceptor:${Version.okhttpVersion}"
     const val timber = "com.jakewharton.timber:timber:${Version.timberVersion}"
+    const val moshi_code_gen = "com.squareup.moshi:moshi-kotlin-codegen:${Version.moshiVersion}"
 }
 
 object Reactive {

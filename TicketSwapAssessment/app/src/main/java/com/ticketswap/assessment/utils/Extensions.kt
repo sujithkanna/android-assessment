@@ -1,5 +1,10 @@
 package com.ticketswap.assessment.utils
 
+import android.content.res.Resources.getSystem
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.GradientDrawable
+import android.graphics.drawable.ShapeDrawable
+import android.view.View
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.StringRes
@@ -13,6 +18,7 @@ import okhttp3.Callback
 import okhttp3.Response
 import java.io.IOException
 import kotlin.coroutines.resumeWithException
+
 
 fun <T> MutableLiveData<T>.asLiveData(): LiveData<T> = this
 
@@ -49,7 +55,7 @@ suspend fun Call.await(recordStack: Boolean = true): Response {
     return suspendCancellableCoroutine { continuation ->
         enqueue(object : Callback {
             override fun onResponse(call: Call, response: Response) {
-                continuation.resume(response, null)
+                continuation.resume(response) {}
             }
 
             override fun onFailure(call: Call, e: IOException) {
@@ -96,4 +102,58 @@ fun Response.closeSafely() {
         close()
     } catch (e: Exception) {
     }
+}
+
+fun <T> Collection<T>?.append(items: Collection<T>?): List<T> {
+    if (this == null && items == null) return listOf()
+    return (this ?: listOf()) + (items ?: listOf())
+}
+
+fun Int.pxToDp() = (this / getSystem().displayMetrics.density)
+
+fun Int.dpToPx() = (this * getSystem().displayMetrics.density)
+
+fun View.setBackgroundDrawableColor(color: Int) {
+    when (background) {
+        is ShapeDrawable -> {
+            val shapeDrawable = background as ShapeDrawable
+            shapeDrawable.paint.color = color
+        }
+        is GradientDrawable -> {
+            val gradientDrawable = background as GradientDrawable
+            gradientDrawable.setColor(color)
+        }
+        is ColorDrawable -> {
+            val colorDrawable = background as ColorDrawable
+            colorDrawable.color = color
+        }
+    }
+}
+
+fun String.firstCaps() = this.replaceFirstChar { it.toString().uppercase() }
+
+fun Long?.toTimerString(): String? {
+    this ?: return null
+    var finalTimerString = ""
+    var secondsString = ""
+
+    // Convert total duration into time
+    val hours = (this / (1000 * 60 * 60)).toInt()
+    val minutes = (this % (1000 * 60 * 60)).toInt() / (1000 * 60)
+    val seconds = (this % (1000 * 60 * 60) % (1000 * 60) / 1000).toInt()
+    // Add hours if there
+    if (hours > 0) {
+        finalTimerString = "$hours:"
+    }
+
+    // Prepending 0 to seconds if it is one digit
+    secondsString = if (seconds < 10) {
+        "0$seconds"
+    } else {
+        "" + seconds
+    }
+    finalTimerString = "$finalTimerString$minutes:$secondsString"
+
+    // return timer string
+    return finalTimerString
 }

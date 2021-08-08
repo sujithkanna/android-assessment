@@ -1,7 +1,11 @@
 package com.ticketswap.assessment.models
 
-data class Items(
-    val external_urls: Map<String, String>,
+import com.squareup.moshi.JsonClass
+
+@JsonClass(generateAdapter = true)
+data class ArtistItem(
+    val external_urls: External_urls,
+    val followers: Followers,
     val genres: List<String>,
     val href: String,
     val id: String,

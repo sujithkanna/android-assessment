@@ -7,4 +7,11 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+
+    <style name="EditTextTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorControlNormal">@color/mine_shaft</item>
+        <item name="colorControlActivated">@color/mine_shaft</item>
+        <item name="colorControlHighlight">@color/mine_shaft</item>
+    </style>
+
 </resources>

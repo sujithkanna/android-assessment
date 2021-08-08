@@ -7,4 +7,8 @@
 
     <color name="cod_gray">#191414</color>
     <color name="mountain_meadow">#1db954</color>
+    <color name="mine_shaft">#232323</color>
+    <color name="silver_chalice">#a5a5a5</color>
+    <color name="lochmara">#0077C2</color>
+    <color name="burnt_sienna">#EF5350</color>
 </resources>
