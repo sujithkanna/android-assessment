@@ -20,7 +20,7 @@ android {
                 includeCompileClasspath = false
             }
         }
-        buildConfigString("SPOTIFY_API_KEY", "84ea753e599142b8bace9b63d153227b")
+        buildConfigString("SPOTIFY_API_KEY", "ea6c1ec1a223466c92c2d2a51d09353f")
     }
 
     compileOptions {
@@ -31,6 +31,18 @@ android {
         getByName("release") {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+        }
+        getByName("debug") {
+            applicationIdSuffix = ".debug"
+        }
+    }
+
+    signingConfigs {
+        getByName("debug") {
+            keyPassword = "android"
+            storePassword = "android"
+            keyAlias = "androiddebugkey"
+            storeFile = file("../debug.keystore")
         }
     }
 
