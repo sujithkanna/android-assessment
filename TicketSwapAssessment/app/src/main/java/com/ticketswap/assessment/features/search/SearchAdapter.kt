@@ -13,10 +13,7 @@ import com.squareup.picasso.Picasso
 import com.ticketswap.assessment.R
 import com.ticketswap.assessment.databinding.InflaterSearchItemBinding
 import com.ticketswap.assessment.models.Item
-import com.ticketswap.assessment.utils.CircleTransform
-import com.ticketswap.assessment.utils.firstCaps
-import com.ticketswap.assessment.utils.setBackgroundDrawableColor
-import com.ticketswap.assessment.utils.toTimerString
+import com.ticketswap.assessment.utils.*
 
 class SearchAdapter : RecyclerView.Adapter<MediaViewHolder>() {
 
@@ -73,7 +70,7 @@ class TrackViewHolder(override val binder: InflaterSearchItemBinding) : MediaVie
 class ArtistViewHolder(override val binder: InflaterSearchItemBinding) : MediaViewHolder(binder) {
     override fun bind(item: Item) {
         super.bind(item)
-        binder.details.text = item.genres?.joinToString(",") { it }
+        binder.details.text = "${prettyCount(item.followers?.total?.toLong() ?: 0L)} Followers"
     }
 }
 
