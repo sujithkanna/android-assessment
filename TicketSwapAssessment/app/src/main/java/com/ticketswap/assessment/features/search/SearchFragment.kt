@@ -5,19 +5,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.*
 import com.ticketswap.assessment.R
 import com.ticketswap.assessment.api.Action
 import com.ticketswap.assessment.databinding.FragmentSearchBinding
 import com.ticketswap.assessment.utils.*
-import com.ticketswap.assessment.widgets.DividerItemDecoration
-import com.ticketswap.assessment.widgets.SizedDivider
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -49,6 +46,10 @@ class SearchFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         listenForBackPress(BackPressAction.create { backToExit.invoke() })
 
+        binder.searchField.addTextChangedListener(onTextChanged = { text, _, _, _ ->
+            searchViewModel.search(text.toString())
+        })
+
         binder.artistTracksList.also {
             it.adapter = searchAdapter
             it.layoutManager = LinearLayoutManager(context)
@@ -59,7 +60,7 @@ class SearchFragment : Fragment() {
                 navController.navigate(R.id.loginFragment)
             }
             if (it.action == Action.SUCCESS) {
-                searchAdapter.setList(it.data!!)
+                searchAdapter.setList(it.data!!.artists!!.items.append(it.data.tracks!!.items))
             }
         })
 

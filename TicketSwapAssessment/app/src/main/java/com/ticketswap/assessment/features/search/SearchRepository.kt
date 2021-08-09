@@ -4,6 +4,7 @@ import com.ticketswap.assessment.api.Resource
 import com.ticketswap.assessment.api.SpotifyApi
 import com.ticketswap.assessment.api.networkBoundResource
 import com.ticketswap.assessment.models.Item
+import com.ticketswap.assessment.models.SearchResponse
 import com.ticketswap.assessment.user.UserManager
 import com.ticketswap.assessment.utils.append
 import kotlinx.coroutines.flow.Flow
@@ -17,9 +18,9 @@ class SearchRepository @Inject constructor(
 
     fun isLoggedIn() = !userManager.spotifyAuthToken.isNullOrBlank()
 
-    fun searchSong(query: String): Flow<Resource<out List<Item>?>> = networkBoundResource(
+    fun searchSong(query: String): Flow<Resource<out SearchResponse?>> = networkBoundResource(
         fetch = { spotifyApi.search(query) },
         query = { null },
-        saveFetchResult = { response -> response.artists?.items.append(response.tracks?.items) }
+        saveFetchResult = { response -> response }
     )
 }

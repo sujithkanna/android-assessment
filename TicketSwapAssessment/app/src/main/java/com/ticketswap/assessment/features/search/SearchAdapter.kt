@@ -13,6 +13,7 @@ import com.squareup.picasso.Picasso
 import com.ticketswap.assessment.R
 import com.ticketswap.assessment.databinding.InflaterSearchItemBinding
 import com.ticketswap.assessment.models.Item
+import com.ticketswap.assessment.utils.CircleTransform
 import com.ticketswap.assessment.utils.firstCaps
 import com.ticketswap.assessment.utils.setBackgroundDrawableColor
 import com.ticketswap.assessment.utils.toTimerString
@@ -84,12 +85,13 @@ abstract class MediaViewHolder(protected open val binder: InflaterSearchItemBind
         if (image == null) {
             binder.icon.setImageResource(R.drawable.ic_music)
         } else {
-            Picasso.with(binder.root.context).load(image).into(binder.icon)
+            Picasso.with(binder.root.context).load(image).transform(CircleTransform())
+                .into(binder.icon)
         }
 
         binder.type.text = item.type.firstCaps()
         val color = resolveColorForType(itemView.context, item.type)
-        binder.icon.setBackgroundColor(color)
+
         binder.type.setBackgroundDrawableColor(color)
     }
 }
