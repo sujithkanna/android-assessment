@@ -1,4 +1,4 @@
-package com.ticketswap.assessment.features.search
+package com.ticketswap.assessment.features.search.medialist
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -11,17 +11,22 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import com.ticketswap.assessment.R
+import com.ticketswap.assessment.databinding.InflaterMediaItemLoaderBinding
 import com.ticketswap.assessment.databinding.InflaterSearchItemBinding
 import com.ticketswap.assessment.models.Item
 import com.ticketswap.assessment.utils.*
+import com.ticketswap.assessment.utils.adapters.LoaderAdapter
 
-class SearchAdapter : RecyclerView.Adapter<MediaViewHolder>() {
+class MediaListAdapter : LoaderAdapter() {
 
     private val diffUtil by lazy { createDiff(this) }
 
-    override fun getItemViewType(position: Int) = resolveItemType(diffUtil.currentList[position])
+    override fun getItemViewType(position: Int): Int {
+        val type = super.getItemViewType(position)
+        return if (type == TYPE_LOADING) type else resolveItemType(diffUtil.currentList[position])
+    }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MediaViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         return when (viewType) {
             TYPE_ARTIST -> ArtistViewHolder(
@@ -30,15 +35,14 @@ class SearchAdapter : RecyclerView.Adapter<MediaViewHolder>() {
             TYPE_TRACK -> TrackViewHolder(
                 InflaterSearchItemBinding.inflate(inflater, parent, false)
             )
-            else -> ArtistViewHolder(
-                InflaterSearchItemBinding.inflate(inflater, parent, false)
-            )
+            else -> super.onCreateViewHolder(parent, viewType)
         }
     }
 
-    override fun onBindViewHolder(holder: MediaViewHolder, position: Int) {
-        val data = diffUtil.currentList[position]
-        holder.bind(data)
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        if (holder is MediaViewHolder) {
+            holder.bind(diffUtil.currentList[position])
+        } else super.onBindViewHolder(holder, position)
     }
 
     override fun getItemCount() = diffUtil.currentList.size
@@ -48,9 +52,18 @@ class SearchAdapter : RecyclerView.Adapter<MediaViewHolder>() {
     }
 
     companion object {
-        const val TYPE_TRACK = 0
-        const val TYPE_ARTIST = 1
+        const val TYPE_TRACK = 2
+        const val TYPE_ARTIST = 3
     }
+
+    override fun createLoader(parent: ViewGroup): RecyclerView.ViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        return LoaderViewHolder(
+            InflaterMediaItemLoaderBinding.inflate(inflater, parent, false).root
+        )
+    }
+
+    override fun getData(): List<Item> = diffUtil.currentList
 }
 
 class TrackViewHolder(override val binder: InflaterSearchItemBinding) : MediaViewHolder(binder) {
@@ -62,15 +75,20 @@ class TrackViewHolder(override val binder: InflaterSearchItemBinding) : MediaVie
     }
 
     private fun getAlbumOrArtist(item: Item): String {
-        return item.album?.name ?: item.artists?.map { it.items?.map { item -> item.name } }
-            ?.joinToString(",") ?: ""
+        return item.album?.name ?: getArtists(item)
+    }
+
+    private fun getArtists(item: Item): String {
+        return item.artists?.map {
+            it.items?.map { item -> item.name }
+        }?.joinToString(",") ?: ""
     }
 }
 
 class ArtistViewHolder(override val binder: InflaterSearchItemBinding) : MediaViewHolder(binder) {
     override fun bind(item: Item) {
         super.bind(item)
-        binder.details.text = "${prettyCount(item.followers?.total?.toLong() ?: 0L)} Followers"
+        binder.details.text = "${prettyCount(item.followers?.total?.toLong())} Followers"
     }
 }
 
@@ -109,9 +127,9 @@ private fun resolveColorForType(context: Context, type: String): Int {
 
 private fun resolveItemType(item: Item): Int {
     return when (item.type) {
-        "album" -> SearchAdapter.TYPE_ARTIST
-        "track" -> SearchAdapter.TYPE_TRACK
-        else -> SearchAdapter.TYPE_ARTIST
+        "album" -> MediaListAdapter.TYPE_ARTIST
+        "track" -> MediaListAdapter.TYPE_TRACK
+        else -> MediaListAdapter.TYPE_ARTIST
     }
 }
 

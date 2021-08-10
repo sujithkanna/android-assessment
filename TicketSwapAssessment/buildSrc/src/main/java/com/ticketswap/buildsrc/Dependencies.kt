@@ -32,6 +32,9 @@ object Version {
     const val retrofitVersion = "2.3.0"
     const val okhttpVersion = "3.11.0"
     const val timberVersion = "4.6.0"
+
+    // Facebook
+    const val shimmerVersion = "0.5.0"
 }
 
 object Dependencies {
@@ -60,7 +63,8 @@ object Libs {
     const val androidKtx = "androidx.activity:activity-ktx:${Version.androidKtxVersion}"
     const val uiKtx = "androidx.navigation:navigation-ui-ktx:${Version.fragmentKtxVersion}"
     const val fragmentKtx = "androidx.navigation:navigation-fragment-ktx:${Version.uiKtxVersion}"
-    const val liveDataKtx = "androidx.lifecycle:lifecycle-livedata-ktx:${Version.liveDataKtxVersion}"
+    const val liveDataKtx =
+        "androidx.lifecycle:lifecycle-livedata-ktx:${Version.liveDataKtxVersion}"
 }
 
 object Spotify {
@@ -91,6 +95,10 @@ object Reactive {
 object Di {
     const val hiltAndroid = "com.google.dagger:hilt-android:${Version.hiltVersion}"
     const val hiltCompiler = "com.google.dagger:hilt-compiler:${Version.hiltVersion}"
+}
+
+object Facebook {
+    const val shimmer = "com.facebook.shimmer:shimmer:${Version.shimmerVersion}"
 }
 
 object TestLibs {

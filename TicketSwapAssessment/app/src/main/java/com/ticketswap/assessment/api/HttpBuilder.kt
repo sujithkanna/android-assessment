@@ -9,6 +9,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import okio.IOException
 
 abstract class HttpBuilder(val client: OkHttpClient, private val baseUrl: String) {
 
@@ -16,6 +17,7 @@ abstract class HttpBuilder(val client: OkHttpClient, private val baseUrl: String
 
     fun newHttpBuilder(path: String = "") = HttpUrl.parse(baseUrl + path)!!.newBuilder()!!
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Throws(Exception::class)
     suspend inline fun <reified T> execute(request: Request): T? {
         val response = client.newCall(request).await()
@@ -27,7 +29,7 @@ abstract class HttpBuilder(val client: OkHttpClient, private val baseUrl: String
 
         when (response.code()) {
             401 -> throw UserNotAuthenticatedException("Spotify api user unauthorised")
-            else -> throw UnknownError("Api failed: $responseString")
+            else -> throw IOException("Api failed: $responseString")
         }
     }
 }

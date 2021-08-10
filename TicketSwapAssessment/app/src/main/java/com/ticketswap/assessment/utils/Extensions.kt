@@ -11,11 +11,18 @@ import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
 import com.squareup.moshi.Moshi
-import kotlinx.coroutines.*
+import com.ticketswap.assessment.api.Action
+import com.ticketswap.assessment.api.Resource
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.suspendCancellableCoroutine
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.Response
 import java.io.IOException
+import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.coroutines.resumeWithException
 
 
@@ -155,4 +162,28 @@ fun Long?.toTimerString(): String? {
 
     // return timer string
     return finalTimerString
+}
+
+fun <T> List<T>?.getOrCreate() = this ?: listOf()
+
+infix fun <T> List<T>?.add(list: List<T>?): List<T> {
+    list ?: return this.getOrCreate()
+    return this.getOrCreate().plus(list.getOrCreate().asIterable())
+}
+
+fun <Class : LiveData<Data>, Data> Class.addSourceTo(mediator: MediatorLiveData<Data>) = apply {
+    mediator.addSource(this) { mediator.value = it }
+}
+
+fun <T> Flow<T>.hookToLiveData(
+    context: CoroutineContext = EmptyCoroutineContext, hook: (data: T) -> Unit
+): LiveData<T> = liveData(context) {
+    collect {
+        emit(it)
+        hook(it)
+    }
+}
+
+fun <T> Flow<Resource<out T?>>.hookToResponse(hook: (data: T) -> Unit) = hookToLiveData {
+    if (it.action == Action.SUCCESS) hook(it.data!!)
 }

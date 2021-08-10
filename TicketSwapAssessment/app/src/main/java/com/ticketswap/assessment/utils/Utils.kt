@@ -46,7 +46,8 @@ fun <T> throttleLatest(
     }
 }
 
-fun prettyCount(number: Long): String {
+fun prettyCount(number: Long?): String {
+    number ?: return "0"
     val suffix = charArrayOf(' ', 'k', 'M', 'B', 'T', 'P', 'E')
     val value = floor(log10(number.toDouble())).toInt()
     val base = value / 3

@@ -10,10 +10,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.tabs.TabLayoutMediator
 import com.ticketswap.assessment.R
 import com.ticketswap.assessment.api.Action
 import com.ticketswap.assessment.databinding.FragmentSearchBinding
+import com.ticketswap.assessment.features.search.medialist.MediaListTabFragment
 import com.ticketswap.assessment.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -26,7 +27,9 @@ class SearchFragment : Fragment() {
 
     private val searchViewModel: SearchViewModel by viewModels()
 
-    private val searchAdapter by lazy { SearchAdapter() }
+    private val types by lazy {
+        MediaListTabFragment.MediaType.values()
+    }
 
     private val backToExit by lazy {
         doubleBackExitStrategy(lifecycleScope) {
@@ -44,23 +47,22 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         listenForBackPress(BackPressAction.create { backToExit.invoke() })
 
         binder.searchField.addTextChangedListener(onTextChanged = { text, _, _, _ ->
             searchViewModel.search(text.toString())
         })
 
-        binder.artistTracksList.also {
-            it.adapter = searchAdapter
-            it.layoutManager = LinearLayoutManager(context)
-        }
+        binder.searchViewpager.adapter = SearchViewpagerAdapter(this, types)
+
+        TabLayoutMediator(binder.tabLayout, binder.searchViewpager) { tab, position ->
+            tab.text = types[position].value.firstCaps()
+        }.attach()
 
         searchViewModel.searchResult.observeOnce(viewLifecycleOwner, {
             if (it.action == Action.UNAUTHORISED) {
                 navController.navigate(R.id.loginFragment)
-            }
-            if (it.action == Action.SUCCESS) {
-                searchAdapter.setList(it.data!!.artists!!.items.append(it.data.tracks!!.items))
             }
         })
 

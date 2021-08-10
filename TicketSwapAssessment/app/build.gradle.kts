@@ -58,6 +58,10 @@ dependencies {
     implementation(Libs.appcompat)
     implementation(Libs.recyclerView)
     implementation(Libs.constraintLayout)
+    implementation("androidx.appcompat:appcompat:1.3.1")
+    implementation("com.google.android.material:material:1.4.0")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.0")
+    implementation("androidx.legacy:legacy-support-v4:1.0.0")
     kapt(Libs.coreKtx)
     implementation(Libs.material)
     implementation(Libs.uiKtx)
@@ -68,7 +72,7 @@ dependencies {
     // Network
     implementation(Square.rxadapter)
     implementation(Square.moshi)
-    kapt (Square.moshi_code_gen)
+    kapt(Square.moshi_code_gen)
     implementation(Square.okhttp)
     implementation(Square.okhttp_intercepter)
     implementation(Square.picasso)
@@ -86,6 +90,9 @@ dependencies {
 
     // Spotify
     implementation(Spotify.spotify)
+
+    // Facebool
+    implementation(Facebook.shimmer)
 
     //Test
     testImplementation(TestLibs.junit)

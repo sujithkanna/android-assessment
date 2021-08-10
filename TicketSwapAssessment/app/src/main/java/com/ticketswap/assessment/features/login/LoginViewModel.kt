@@ -24,9 +24,6 @@ class LoginViewModel @Inject constructor(private val loginRepository: LoginRepos
     }
 
     fun processLoginResponse(response: AuthenticationResponse) {
-        if (response.error != null) {
-            Log.e("TestTest", response.error)
-        }
         _loginResult.value = when (response.type) {
             AuthenticationResponse.Type.TOKEN -> {
                 loginRepository.saveAccessToken(response.accessToken)

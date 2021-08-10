@@ -9,4 +9,6 @@
     <string name="login_to_search_your_favourite_tracks_and_artists">Login to search your favourite tracks and artists</string>
     <string name="type_here">Type here</string>
     <string name="search_your_favourite_artist_and_track">Search your favourite Artist and Track</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

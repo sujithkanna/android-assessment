@@ -1,6 +1,11 @@
 package com.ticketswap.assessment.features.search
 
 import androidx.lifecycle.*
+import com.ticketswap.assessment.features.search.medialist.MediaListTabFragment.*
+import com.ticketswap.assessment.features.search.medialist.MediaListTabFragment.MediaType.*
+import com.ticketswap.assessment.models.Item
+import com.ticketswap.assessment.utils.hookToResponse
+import com.ticketswap.assessment.utils.livedata.AccumulatedListLivedata
 import com.ticketswap.assessment.utils.throttleLatest
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -10,19 +15,54 @@ class SearchViewModel @Inject constructor(private val repository: SearchReposito
 
     fun isLoggedIn() = repository.isLoggedIn()
 
+    // Artist list will be added here
+    private val _artistList = AccumulatedListLivedata<Item>()
+
+    // Track list will be added here
+    private val _tracksList = AccumulatedListLivedata<Item>()
+
     private val searchDebounce by lazy {
         throttleLatest<String>(TEXT_CHANGE_DEBOUNCE, viewModelScope) {
-            if (it.isNotEmpty()) searchTrigger.value = it
+            if (it.isNotEmpty()) searchTriggerLive.search(it)
         }
     }
 
-    private val searchTrigger = MutableLiveData<String>()
+    private val searchTriggerLive by lazy {
+        SearchPaginatedLiveData(setOf(ARTIST, TRACK))
+    }
 
-    val searchResult = Transformations.switchMap(searchTrigger) { query ->
-        return@switchMap repository.searchSong(query).asLiveData()
+    val searchResult = Transformations.switchMap(searchTriggerLive) { query ->
+        return@switchMap repository.searchSong(query).hookToResponse {
+            val accumulate = query.offset != 0
+            if (query.type.contains(TRACK)) {
+                processSearchResult(TRACK, it.tracks?.items, accumulate, _tracksList)
+            }
+            if (query.type.contains(ARTIST)) {
+                processSearchResult(ARTIST, it.artists?.items, accumulate, _artistList)
+            }
+        }
+    }
+
+    private fun processSearchResult(
+        type: MediaType, items: List<Item>?,
+        accumulate: Boolean, liveData: AccumulatedListLivedata<Item>
+    ) {
+        if (items.isNullOrEmpty()) {
+            searchTriggerLive.finished(type)
+        } else {
+            liveData.setValue(items, accumulate)
+            searchTriggerLive.addNewOffset(type, items.size)
+        }
     }
 
     fun search(query: String) = searchDebounce.invoke(query)
+
+    fun subscribeTo(type: MediaType) = when (type) {
+        TRACK -> _tracksList
+        ARTIST -> _artistList
+    }
+
+    fun loadMore(mediaType: MediaType) = searchTriggerLive.nextPage(mediaType)
 
     companion object {
         const val TEXT_CHANGE_DEBOUNCE = 300L

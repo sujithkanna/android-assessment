@@ -20,7 +20,6 @@ inline fun <ResultType, RequestType> networkBoundResource(
             emit(Resource.Success(saveFetchResult(response)))
         }
     } catch (e: Exception) {
-        e.printStackTrace()
         if (e is UserNotAuthenticatedException) {
             emit(Resource.Error<ResultType>(Action.UNAUTHORISED, e))
         } else {

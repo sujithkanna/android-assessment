@@ -10,6 +10,5 @@ class SizedDivider(val context: Context, @RecyclerView.Orientation val orientati
 
     override fun onDraw(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
         super.onDraw(c, parent, state)
-        Log.i("TestTest", "W - ${c.width} = H - ${c.height}")
     }
 }
