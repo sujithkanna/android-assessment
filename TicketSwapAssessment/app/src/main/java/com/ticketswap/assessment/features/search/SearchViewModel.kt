@@ -49,6 +49,7 @@ class SearchViewModel @Inject constructor(private val repository: SearchReposito
     ) {
         if (items.isNullOrEmpty()) {
             searchTriggerLive.finished(type)
+            liveData.trigger()
         } else {
             liveData.setValue(items, accumulate)
             searchTriggerLive.addNewOffset(type, items.size)

@@ -45,8 +45,6 @@ class MediaListAdapter : LoaderAdapter() {
         } else super.onBindViewHolder(holder, position)
     }
 
-    override fun getItemCount() = diffUtil.currentList.size
-
     fun setList(list: List<Item>, callback: Runnable? = null) {
         diffUtil.submitList(list, callback)
     }

@@ -17,5 +17,6 @@ class AccumulatedListLivedata<T> : MutableLiveData<List<T>>(listOf()) {
     }
 
     fun clear() = super.setValue(listOf())
+    fun trigger() = super.setValue(value)
 
 }

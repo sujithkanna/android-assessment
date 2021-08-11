@@ -10,7 +10,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.ticketswap.assessment.api.Action
 import com.ticketswap.assessment.databinding.FragmentMediaListTabBinding
 import com.ticketswap.assessment.features.search.SearchViewModel
-import com.ticketswap.assessment.utils.DataChangeListener
+import com.ticketswap.assessment.utils.addScrollStateChangedListener
+import com.ticketswap.assessment.utils.hideKeyboard
 import com.ticketswap.assessment.utils.loadIfLessThan
 import com.ticketswap.assessment.utils.observeOnce
 
@@ -46,6 +47,10 @@ class MediaListTabFragment : Fragment() {
             searchViewModel.loadMore(mediaType)
         }
 
+        binder.root.addScrollStateChangedListener { _, _ ->
+            binder.root.hideKeyboard()
+        }
+
         searchViewModel.searchResult.observe(viewLifecycleOwner, {
             if (it.action == Action.LOADING) {
                 mediaListAdapter.showLoading(true)
@@ -55,10 +60,9 @@ class MediaListTabFragment : Fragment() {
         })
 
         searchViewModel.subscribeTo(mediaType).observeOnce(viewLifecycleOwner, {
-            DataChangeListener.register(mediaListAdapter) {
+            mediaListAdapter.setList(it) {
                 mediaListAdapter.showLoading(false)
             }
-            mediaListAdapter.setList(it)
         })
     }
 

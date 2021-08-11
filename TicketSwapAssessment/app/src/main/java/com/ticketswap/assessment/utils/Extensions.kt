@@ -5,11 +5,14 @@ import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.ShapeDrawable
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.StringRes
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
+import androidx.recyclerview.widget.RecyclerView
 import com.squareup.moshi.Moshi
 import com.ticketswap.assessment.api.Action
 import com.ticketswap.assessment.api.Resource
@@ -186,4 +189,20 @@ fun <T> Flow<T>.hookToLiveData(
 
 fun <T> Flow<Resource<out T?>>.hookToResponse(hook: (data: T) -> Unit) = hookToLiveData {
     if (it.action == Action.SUCCESS) hook(it.data!!)
+}
+
+fun View.hideKeyboard(flags: Int? = null) {
+    val imm: InputMethodManager = this.context
+        .getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
+    imm.hideSoftInputFromWindow(this.windowToken, flags ?: 0)
+}
+
+fun RecyclerView.addScrollStateChangedListener(
+    onScrollStateChanged: (recyclerView: RecyclerView, newState: Int) -> Unit
+) {
+    this.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+            onScrollStateChanged(recyclerView, newState)
+        }
+    })
 }

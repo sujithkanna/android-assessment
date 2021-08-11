@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.appbar.AppBarLayout.OnOffsetChangedListener
 import com.google.android.material.tabs.TabLayoutMediator
 import com.ticketswap.assessment.R
 import com.ticketswap.assessment.api.Action
@@ -50,6 +51,10 @@ class SearchFragment : Fragment() {
 
         listenForBackPress(BackPressAction.create { backToExit.invoke() })
 
+        binder.searchField.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) binder.searchAppbar.setExpanded(false, true)
+        }
+
         binder.searchField.addTextChangedListener(onTextChanged = { text, _, _, _ ->
             searchViewModel.search(text.toString())
         })
@@ -60,7 +65,7 @@ class SearchFragment : Fragment() {
             tab.text = types[position].value.firstCaps()
         }.attach()
 
-        searchViewModel.searchResult.observeOnce(viewLifecycleOwner, {
+        searchViewModel.searchResult.observe(viewLifecycleOwner, {
             if (it.action == Action.UNAUTHORISED) {
                 navController.navigate(R.id.loginFragment)
             }
