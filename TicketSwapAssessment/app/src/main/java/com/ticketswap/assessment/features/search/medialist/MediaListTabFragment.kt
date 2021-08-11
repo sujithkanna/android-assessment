@@ -48,6 +48,7 @@ class MediaListTabFragment : Fragment() {
         }
 
         binder.root.addScrollStateChangedListener { _, _ ->
+            binder.root.requestFocus()
             binder.root.hideKeyboard()
         }
 
