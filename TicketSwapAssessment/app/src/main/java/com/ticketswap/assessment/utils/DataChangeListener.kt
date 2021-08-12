@@ -16,7 +16,7 @@ class DataChangeListener private constructor(
     }
 
     companion object {
-        fun register(adapter: Adapter<ViewHolder>, callback: () -> Unit) =
+        fun once(adapter: Adapter<ViewHolder>, callback: () -> Unit) =
             DataChangeListener(adapter, callback)
     }
 }
