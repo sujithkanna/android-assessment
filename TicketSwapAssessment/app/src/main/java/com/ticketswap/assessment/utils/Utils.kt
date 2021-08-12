@@ -1,10 +1,6 @@
 package com.ticketswap.assessment.utils
 
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.drawable.VectorDrawable
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.flow
 import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.util.*
@@ -51,8 +47,23 @@ fun <T> throttleLatest(
     }
 }
 
-fun <T> throttleFlow(intervalMs: Long = 300L, callback: (T) -> Unit) = flow<T> {
-
+fun <T> debounce(
+    intervalMs: Long = 300L, scope: CoroutineScope, callback: (T) -> Unit
+): (T) -> Unit {
+    var job: Job? = null
+    var latestParam: T
+    return { param: T ->
+        latestParam = param
+        job = if (job == null || job?.isCompleted == true) {
+            scope.launch {
+                scope.launch(Dispatchers.Main) { latestParam.let(callback) }
+                delay(intervalMs)
+            }
+        } else {
+            job?.cancel()
+            scope.launch { delay(intervalMs) }
+        }
+    }
 }
 
 fun prettyCount(number: Long?): String {

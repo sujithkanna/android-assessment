@@ -1,7 +1,6 @@
 package com.ticketswap.assessment.features.search.media
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,18 +35,14 @@ class TrackFragment : MediaFragment() {
             binder.icon.setImageDrawable(icon?.rounded())
             startPostponedEnterTransition()
         } else {
-            Picasso.with(context).load(resolveImageForItem(mediaItem)).into(
-                bitmapLoad = {
-                    Log.i("TestTest", "loaded actual image")
+            Picasso.with(context).load(resolveImageForItem(mediaItem))
+                .into(bitmapLoad = {
                     binder.icon.setImageDrawable(it.rounded())
                     startPostponedEnterTransition()
-                },
-                bitmapFailed = {
-                    Log.i("TestTest", "loaded image default")
+                }, bitmapFailed = {
                     binder.icon.setImageDrawable(it)
                     startPostponedEnterTransition()
-                }
-            )
+                })
         }
     }
 

@@ -1,10 +1,7 @@
 package com.ticketswap.assessment.features.search.medialist
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.annotation.ColorInt
-import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.AsyncListDiffer
@@ -106,18 +103,10 @@ abstract class MediaViewHolder(
             val icon = ContextCompat.getDrawable(itemView.context, R.drawable.spotify)
             binder.icon.setImageDrawable(icon?.rounded()?.apply { setCircular(true) })
         } else {
-            // Not the best solution
-            Picasso.with(binder.root.context)
-                .load(image)
-                .transform(CircleTransform())
-                .into(bitmapLoad = {
-                    binder.icon.setImageDrawable(it.rounded())
-                }, bitmapFailed = { binder.icon.setImageDrawable(it) })
+            Picasso.with(binder.root.context).load(image).transform(CircleTransform())
+                .into(bitmapLoad = { binder.icon.setImageDrawable(it.rounded()) },
+                    bitmapFailed = { binder.icon.setImageDrawable(it) })
         }
-
-        binder.type.text = item.type.initialtCaps()
-        val color = resolveColorForType(itemView.context, item.type)
-        binder.type.setBackgroundDrawableColor(color)
 
         binder.root.setOnClickListener { listener.onClickMedia(binder, item) }
         ViewCompat.setTransitionName(binder.icon, "icon_${item.id}")
@@ -126,16 +115,6 @@ abstract class MediaViewHolder(
 
 fun resolveImageForItem(item: Item): String? {
     return (item.images ?: item.album?.images)?.firstOrNull()?.url
-}
-
-@ColorInt
-private fun resolveColorForType(context: Context, type: String): Int {
-    @ColorRes val resId = when (type) {
-        "artist" -> R.color.burnt_sienna
-        "track" -> R.color.lochmara
-        else -> R.color.colorPrimaryDark
-    }
-    return ContextCompat.getColor(context, resId)
 }
 
 private fun resolveItemType(item: Item): Int {

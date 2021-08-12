@@ -13,15 +13,13 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ticketswap.assessment.R
 import com.ticketswap.assessment.api.Action
+import com.ticketswap.assessment.api.isLoading
 import com.ticketswap.assessment.databinding.FragmentMediaListTabBinding
 import com.ticketswap.assessment.databinding.InflaterSearchItemBinding
 import com.ticketswap.assessment.features.search.SearchViewModel
 import com.ticketswap.assessment.features.search.media.MediaFragment.Companion.EXTRA_MEDIA_ITEM
 import com.ticketswap.assessment.models.Item
-import com.ticketswap.assessment.utils.addScrollStateChangedListener
-import com.ticketswap.assessment.utils.hideKeyboard
-import com.ticketswap.assessment.utils.loadIfLessThan
-import com.ticketswap.assessment.utils.observeOnce
+import com.ticketswap.assessment.utils.*
 
 class MediaListTabFragment : Fragment(), MediaClickListener {
 
@@ -63,7 +61,10 @@ class MediaListTabFragment : Fragment(), MediaClickListener {
 
         binder.root.layoutManager?.onRestoreInstanceState(state)
 
-        binder.root.loadIfLessThan {
+        val latch = object : LoaderLatch {
+            override fun canLoadMore() = !searchViewModel.searchResult.value.isLoading()
+        }
+        binder.root.loadIfLessThan(latch) {
             searchViewModel.loadMore(mediaType)
         }
 

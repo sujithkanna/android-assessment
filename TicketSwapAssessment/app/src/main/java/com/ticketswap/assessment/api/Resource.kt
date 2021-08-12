@@ -14,3 +14,5 @@ sealed class Resource<T>(
 enum class Action {
     LOADING, SUCCESS, FAILED, CACHE, UNAUTHORISED
 }
+
+fun <T> Resource<T>?.isLoading() = this?.action == Action.LOADING
