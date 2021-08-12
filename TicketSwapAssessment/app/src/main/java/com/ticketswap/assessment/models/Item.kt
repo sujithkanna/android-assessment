@@ -1,6 +1,7 @@
 package com.ticketswap.assessment.models
 
 import com.squareup.moshi.JsonClass
+import java.io.Serializable
 
 @JsonClass(generateAdapter = true)
 data class Item(
@@ -21,7 +22,7 @@ data class Item(
     val track_number: Int?,
     val type: String,
     val uri: String?,
-    val followers : Followers?,
-    val genres : List<String>?,
-    val images : List<Images>?,
-)
+    val followers: Followers?,
+    val genres: List<String>?,
+    val images: List<Images>?,
+) : Serializable

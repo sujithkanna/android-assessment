@@ -13,11 +13,18 @@
         <action
             android:id="@+id/action_searchFragment2_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_searchFragment_to_trackFragment"
+            app:destination="@id/trackFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.ticketswap.assessment.features.login.LoginFragment"
         android:label="LoginFragment" />
+    <fragment
+        android:id="@+id/trackFragment"
+        android:name="com.ticketswap.assessment.features.search.media.TrackFragment"
+        android:label="TrackFragment" />
 
 </navigation>

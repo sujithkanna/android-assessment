@@ -1,6 +1,7 @@
 package com.ticketswap.assessment.models
 
 import com.squareup.moshi.JsonClass
+import java.io.Serializable
 
 @JsonClass(generateAdapter = true)
 data class Album(
@@ -17,4 +18,4 @@ data class Album(
     val total_tracks: Int,
     val type: String,
     val uri: String
-)
+) : Serializable

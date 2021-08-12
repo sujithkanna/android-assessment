@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -17,7 +18,7 @@ import com.ticketswap.assessment.models.Item
 import com.ticketswap.assessment.utils.*
 import com.ticketswap.assessment.utils.adapters.LoaderAdapter
 
-class MediaListAdapter : LoaderAdapter() {
+class MediaListAdapter(private val listener: MediaClickListener) : LoaderAdapter() {
 
     private val diffUtil by lazy { createDiff(this) }
 
@@ -30,10 +31,12 @@ class MediaListAdapter : LoaderAdapter() {
         val inflater = LayoutInflater.from(parent.context)
         return when (viewType) {
             TYPE_ARTIST -> ArtistViewHolder(
-                InflaterSearchItemBinding.inflate(inflater, parent, false)
+                InflaterSearchItemBinding.inflate(inflater, parent, false),
+                listener
             )
             TYPE_TRACK -> TrackViewHolder(
-                InflaterSearchItemBinding.inflate(inflater, parent, false)
+                InflaterSearchItemBinding.inflate(inflater, parent, false),
+                listener
             )
             else -> super.onCreateViewHolder(parent, viewType)
         }
@@ -64,7 +67,9 @@ class MediaListAdapter : LoaderAdapter() {
     override fun getData(): List<Item> = diffUtil.currentList
 }
 
-class TrackViewHolder(override val binder: InflaterSearchItemBinding) : MediaViewHolder(binder) {
+class TrackViewHolder(
+    override val binder: InflaterSearchItemBinding, listener: MediaClickListener
+) : MediaViewHolder(binder, listener) {
     override fun bind(item: Item) {
         super.bind(item)
         binder.details.text = getAlbumOrArtist(item)
@@ -72,9 +77,7 @@ class TrackViewHolder(override val binder: InflaterSearchItemBinding) : MediaVie
         if (duration != null) binder.duration.text = "($duration)"
     }
 
-    private fun getAlbumOrArtist(item: Item): String {
-        return item.album?.name ?: getArtists(item)
-    }
+    private fun getAlbumOrArtist(item: Item) = item.album?.name ?: getArtists(item)
 
     private fun getArtists(item: Item): String {
         return item.artists?.map {
@@ -83,33 +86,45 @@ class TrackViewHolder(override val binder: InflaterSearchItemBinding) : MediaVie
     }
 }
 
-class ArtistViewHolder(override val binder: InflaterSearchItemBinding) : MediaViewHolder(binder) {
+class ArtistViewHolder(
+    override val binder: InflaterSearchItemBinding, listener: MediaClickListener
+) : MediaViewHolder(binder, listener) {
     override fun bind(item: Item) {
         super.bind(item)
         binder.details.text = "${prettyCount(item.followers?.total?.toLong())} Followers"
     }
 }
 
-abstract class MediaViewHolder(protected open val binder: InflaterSearchItemBinding) :
+abstract class MediaViewHolder(
+    protected open val binder: InflaterSearchItemBinding, private val listener: MediaClickListener
+) :
     RecyclerView.ViewHolder(binder.root) {
     open fun bind(item: Item) {
         binder.title.text = item.name
         val image = resolveImageForItem(item)
         if (image == null) {
-            binder.icon.setImageResource(R.drawable.ic_music)
+            val icon = ContextCompat.getDrawable(itemView.context, R.drawable.spotify)
+            binder.icon.setImageDrawable(icon?.rounded()?.apply { setCircular(true) })
         } else {
-            Picasso.with(binder.root.context).load(image).transform(CircleTransform())
-                .into(binder.icon)
+            // Not the best solution
+            Picasso.with(binder.root.context)
+                .load(image)
+                .transform(CircleTransform())
+                .into(bitmapLoad = {
+                    binder.icon.setImageDrawable(it.rounded())
+                }, bitmapFailed = { binder.icon.setImageDrawable(it) })
         }
 
-        binder.type.text = item.type.firstCaps()
+        binder.type.text = item.type.initialtCaps()
         val color = resolveColorForType(itemView.context, item.type)
-
         binder.type.setBackgroundDrawableColor(color)
+
+        binder.root.setOnClickListener { listener.onClickMedia(binder, item) }
+        ViewCompat.setTransitionName(binder.icon, "icon_${item.id}")
     }
 }
 
-private fun resolveImageForItem(item: Item): String? {
+fun resolveImageForItem(item: Item): String? {
     return (item.images ?: item.album?.images)?.firstOrNull()?.url
 }
 
@@ -148,4 +163,8 @@ fun <T : RecyclerView.ViewHolder> createDiff(adapter: RecyclerView.Adapter<T>)
                     && oldItem.name == newItem.name
         }
     })
+}
+
+interface MediaClickListener {
+    fun onClickMedia(binder: InflaterSearchItemBinding, item: Item)
 }

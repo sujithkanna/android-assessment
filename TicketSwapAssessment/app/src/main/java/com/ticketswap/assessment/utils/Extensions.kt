@@ -1,7 +1,11 @@
 package com.ticketswap.assessment.utils
 
 import android.content.res.Resources.getSystem
+import android.graphics.Bitmap
+import android.graphics.Bitmap.Config.ARGB_8888
+import android.graphics.Canvas
 import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.ShapeDrawable
 import android.view.View
@@ -10,10 +14,15 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.graphics.drawable.RoundedBitmapDrawable
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.moshi.Moshi
+import com.squareup.picasso.Picasso
+import com.squareup.picasso.RequestCreator
+import com.squareup.picasso.Target
 import com.ticketswap.assessment.api.Action
 import com.ticketswap.assessment.api.Resource
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -23,7 +32,7 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.Response
-import java.io.IOException
+import okio.IOException
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.coroutines.resumeWithException
@@ -139,7 +148,7 @@ fun View.setBackgroundDrawableColor(color: Int) {
     }
 }
 
-fun String.firstCaps() = this.replaceFirstChar { it.toString().uppercase() }
+fun String.initialtCaps() = this.replaceFirstChar { it.toString().uppercase() }
 
 fun Long?.toTimerString(): String? {
     this ?: return null
@@ -205,4 +214,33 @@ fun RecyclerView.addScrollStateChangedListener(
             onScrollStateChanged(recyclerView, newState)
         }
     })
+}
+
+fun RequestCreator.into(
+    bitmapLoad: (loadedImage: Bitmap) -> Unit,
+    bitmapFailed: (loadedImage: Drawable?) -> Unit
+) {
+    this.into(object : Target {
+        override fun onBitmapLoaded(bitmap: Bitmap, from: Picasso.LoadedFrom) {
+            bitmapLoad(bitmap)
+        }
+
+        override fun onBitmapFailed(errorDrawable: Drawable?) {
+            bitmapFailed(errorDrawable)
+        }
+
+        override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
+
+        }
+    })
+}
+
+fun Bitmap.rounded() = RoundedBitmapDrawableFactory.create(getSystem(), this)
+
+fun Drawable.rounded(): RoundedBitmapDrawable {
+    val bitmap: Bitmap = Bitmap.createBitmap(this.intrinsicWidth, this.intrinsicHeight, ARGB_8888)
+    val canvas = Canvas(bitmap)
+    this.setBounds(0, 0, canvas.width, canvas.height)
+    this.draw(canvas)
+    return bitmap.rounded()
 }

@@ -1,12 +1,17 @@
 package com.ticketswap.assessment.utils
 
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.drawable.VectorDrawable
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.flow
 import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.util.*
 import kotlin.math.floor
 import kotlin.math.log10
 import kotlin.math.pow
+
 
 private const val DOUBLE_BACK_PRESS_DURATION = 1500L
 fun doubleBackExitStrategy(
@@ -44,6 +49,10 @@ fun <T> throttleLatest(
             }
         }
     }
+}
+
+fun <T> throttleFlow(intervalMs: Long = 300L, callback: (T) -> Unit) = flow<T> {
+
 }
 
 fun prettyCount(number: Long?): String {

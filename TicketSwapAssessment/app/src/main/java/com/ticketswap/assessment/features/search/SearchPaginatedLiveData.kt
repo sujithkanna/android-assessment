@@ -7,7 +7,7 @@ import com.ticketswap.assessment.features.search.medialist.MediaListTabFragment.
 class SearchPaginatedLiveData(private val supports: Set<MediaType>) :
     MediatorLiveData<SearchQuery>() {
 
-    private lateinit var currentQuery: String
+    private var currentQuery: String = ""
     private val pages = HashMap<MediaType, OffsetLiveData>().apply {
         createPages(this)
     }
@@ -28,6 +28,7 @@ class SearchPaginatedLiveData(private val supports: Set<MediaType>) :
     fun finished(type: MediaType) = pages[type]?.markAsFinished()
 
     fun search(query: String) {
+        if (currentQuery == query) return
         this.currentQuery = query
         pages.values.forEach { it.reset() }
         value = SearchQuery(query, 0, supports)

@@ -61,8 +61,9 @@ object Libs {
     const val coreKtx = "androidx.core:core-ktx:${Version.coreKtxVersion}"
     const val material = "com.google.android.material:material:${Version.materialVersion}"
     const val androidKtx = "androidx.activity:activity-ktx:${Version.androidKtxVersion}"
-    const val uiKtx = "androidx.navigation:navigation-ui-ktx:${Version.fragmentKtxVersion}"
-    const val fragmentKtx = "androidx.navigation:navigation-fragment-ktx:${Version.uiKtxVersion}"
+    const val uiKtx = "androidx.navigation:navigation-ui-ktx:${Version.uiKtxVersion}"
+    const val fragmentKtx =
+        "androidx.navigation:navigation-fragment-ktx:${Version.fragmentKtxVersion}"
     const val liveDataKtx =
         "androidx.lifecycle:lifecycle-livedata-ktx:${Version.liveDataKtxVersion}"
 }
