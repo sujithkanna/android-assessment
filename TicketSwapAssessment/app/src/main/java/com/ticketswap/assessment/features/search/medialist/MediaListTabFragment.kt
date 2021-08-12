@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -101,10 +102,14 @@ class MediaListTabFragment : Fragment(), MediaClickListener {
     }
 
     override fun onClickMedia(binder: InflaterSearchItemBinding, item: Item) {
+        val controller = findNavController()
+
         val extras = FragmentNavigatorExtras(
             binder.icon to binder.icon.transitionName
         )
+        R.id.trackFragment
         val args = Bundle().apply { putSerializable(EXTRA_MEDIA_ITEM, item) }
-        findNavController().navigate(R.id.trackFragment, args, null, extras)
+
+        controller.navigate(R.id.action_searchFragment_to_trackFragment, args, null, extras)
     }
 }

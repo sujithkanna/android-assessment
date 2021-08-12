@@ -15,13 +15,18 @@
             app:destination="@id/loginFragment" />
         <action
             android:id="@+id/action_searchFragment_to_trackFragment"
-            app:destination="@id/trackFragment" />
+            app:destination="@id/trackFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
     </fragment>
 
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.ticketswap.assessment.features.login.LoginFragment"
         android:label="LoginFragment" />
+
     <fragment
         android:id="@+id/trackFragment"
         android:name="com.ticketswap.assessment.features.search.media.TrackFragment"
