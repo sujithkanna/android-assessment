@@ -1,7 +1,6 @@
 package com.ticketswap.assessment.features.login
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -58,7 +57,11 @@ class LoginFragment : Fragment() {
         })
 
         loginViewModel.loginResult.observeNotNull(this, { success ->
-            if (success) navController.popBackStack() else showRetry()
+            if (success) {
+                if (!navController.popBackStack(R.id.searchFragment, true)) {
+                    navController.navigate(R.id.searchFragment)
+                }
+            } else showRetry()
         })
 
         binder.buttonLogin.setOnClickListener { loginViewModel.doLogin() }
