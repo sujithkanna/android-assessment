@@ -19,7 +19,8 @@ class DashboardActivity : AppCompatActivity() {
         binder = ActivityDashboardBinding.inflate(layoutInflater)
         setContentView(binder.root)
 
-        navHost = NavHostFragment.create(R.navigation.search_navigation)
+        val navHost = supportFragmentManager.findFragmentById(R.id.fragment_host)
+            ?: NavHostFragment.create(R.navigation.search_navigation)
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_host, navHost)
             .setPrimaryNavigationFragment(navHost).commit()

@@ -8,6 +8,7 @@ import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.ShapeDrawable
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
@@ -243,4 +244,12 @@ fun Drawable.rounded(): RoundedBitmapDrawable {
     this.setBounds(0, 0, canvas.width, canvas.height)
     this.draw(canvas)
     return bitmap.rounded()
+}
+
+fun <T> List<List<T>?>.flatten(): List<T> {
+    val newList = ArrayList<T>()
+    for (element in this) {
+        if (element != null) newList.addAll(element)
+    }
+    return newList
 }

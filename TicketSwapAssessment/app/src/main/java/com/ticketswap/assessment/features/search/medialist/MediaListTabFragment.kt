@@ -27,8 +27,6 @@ class MediaListTabFragment : Fragment(), MediaClickListener {
 
     private val mediaListAdapter by lazy { MediaListAdapter(this) }
 
-    private var state: Parcelable? = null
-
     private val searchViewModel: SearchViewModel by viewModels(
         ownerProducer = { requireParentFragment() }
     )
@@ -44,13 +42,28 @@ class MediaListTabFragment : Fragment(), MediaClickListener {
         return binder.root
     }
 
-    override fun onPause() {
-        super.onPause()
-        state = binder.root.layoutManager?.onSaveInstanceState()
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        if (isInLayout) {
+            outState.putParcelable(
+                SEARCH_LIST_STATE,
+                binder.root.layoutManager?.onSaveInstanceState()
+            )
+        }
+    }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        if (isInLayout) {
+            savedInstanceState?.getParcelable<Parcelable>(SEARCH_LIST_STATE).let {
+                binder.root.layoutManager?.onRestoreInstanceState(it)
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         binder.root.apply {
             this.adapter = mediaListAdapter
             this.layoutManager = LinearLayoutManager(context)
@@ -58,8 +71,6 @@ class MediaListTabFragment : Fragment(), MediaClickListener {
                 startPostponedEnterTransition()
             }
         }
-
-        binder.root.layoutManager?.onRestoreInstanceState(state)
 
         val latch = object : LoaderLatch {
             override fun canLoadMore() = !searchViewModel.searchResult.value.isLoading()
@@ -96,6 +107,7 @@ class MediaListTabFragment : Fragment(), MediaClickListener {
 
     companion object {
         private const val EXTRA_MEDIA_TYPE = "extra_media_type"
+        private const val SEARCH_LIST_STATE = "search_list_state"
         fun forType(type: MediaType): MediaListTabFragment {
             val bundle = Bundle().apply { putSerializable(EXTRA_MEDIA_TYPE, type) }
             return MediaListTabFragment().apply { arguments = bundle }
@@ -103,7 +115,7 @@ class MediaListTabFragment : Fragment(), MediaClickListener {
     }
 
     enum class MediaType(val value: String) {
-        ARTIST("artist"), TRACK("track")
+        TRACK("track"), ARTIST("artist")
     }
 
     override fun onClickMedia(binder: InflaterSearchItemBinding, item: Item) {
@@ -116,4 +128,5 @@ class MediaListTabFragment : Fragment(), MediaClickListener {
 
         controller.navigate(R.id.trackFragment, args, null, extras)
     }
+
 }

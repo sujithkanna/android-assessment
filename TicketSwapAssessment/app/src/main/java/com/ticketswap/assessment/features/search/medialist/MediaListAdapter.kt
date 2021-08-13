@@ -74,12 +74,19 @@ class TrackViewHolder(
         if (duration != null) binder.duration.text = "($duration)"
     }
 
-    private fun getAlbumOrArtist(item: Item) = item.album?.name ?: getArtists(item)
 
-    private fun getArtists(item: Item): String {
-        return item.artists?.map {
-            it.items?.map { item -> item.name }
-        }?.joinToString(",") ?: ""
+    companion object {
+        private fun getArtistsString(item: Item): String? {
+            return getArtists(item)?.joinToString(",")
+        }
+
+        fun getArtists(item: Item): List<String>? {
+            return item.artists?.map {
+                it.items?.map { item -> item.name }
+            }?.flatten()
+        }
+
+        fun getAlbumOrArtist(item: Item) = item.album?.name ?: getArtistsString(item) ?: ""
     }
 }
 

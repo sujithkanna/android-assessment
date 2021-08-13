@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.cardview.widget.CardView
+    <FrameLayout
+        android:id="@+id/card"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintDimensionRatio="1:1"
@@ -18,6 +19,33 @@
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop" />
-    </androidx.cardview.widget.CardView>
+
+    </FrameLayout>
+
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="0dp"
+        android:layout_height="120dp"
+        android:alpha="0"
+        android:background="@color/cod_gray_85"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxLines="2"
+        android:padding="20dp"
+        android:textColor="@color/white"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/card"
+        app:layout_constraintLeft_toLeftOf="@+id/card"
+        app:layout_constraintRight_toRightOf="@+id/card" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/details"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:alpha="0"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/card" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

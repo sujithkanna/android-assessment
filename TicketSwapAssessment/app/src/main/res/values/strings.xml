@@ -11,4 +11,9 @@
     <string name="search_your_favourite_artist_and_track">Search your favourite Artist and Track</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <plurals name="artist">
+        <item quantity="one">Artist</item>
+        <item quantity="other">Artists</item>
+    </plurals>
 </resources>

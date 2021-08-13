@@ -58,15 +58,12 @@ dependencies {
     implementation(Libs.appcompat)
     implementation(Libs.recyclerView)
     implementation(Libs.constraintLayout)
-    implementation("androidx.appcompat:appcompat:1.3.1")
-    implementation("com.google.android.material:material:1.4.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.0")
-    implementation("androidx.legacy:legacy-support-v4:1.0.0")
     kapt(Libs.coreKtx)
     implementation(Libs.material)
     implementation(Libs.uiKtx)
     kapt(Libs.androidKtx)
-    implementation(Libs.fragmentKtx)
+    implementation(Libs.navigationKtx)
+    implementation(Libs.fragmentKts)
     implementation(Libs.liveDataKtx)
 
     // Network

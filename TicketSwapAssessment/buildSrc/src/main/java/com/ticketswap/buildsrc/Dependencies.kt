@@ -5,7 +5,8 @@ object Version {
     const val recyclerViewVersion = "1.2.1"
     const val coreKtxVersion = "1.6.0"
     const val androidKtxVersion = "1.3.1"
-    const val fragmentKtxVersion = "2.3.5"
+    const val navigationKtxVersion = "2.3.5"
+    const val fragmentKtxVersion = "1.3.6"
     const val uiKtxVersion = "2.3.5"
     const val liveDataKtxVersion = "2.2.0"
     const val materialVersion = "1.4.0"
@@ -62,8 +63,9 @@ object Libs {
     const val material = "com.google.android.material:material:${Version.materialVersion}"
     const val androidKtx = "androidx.activity:activity-ktx:${Version.androidKtxVersion}"
     const val uiKtx = "androidx.navigation:navigation-ui-ktx:${Version.uiKtxVersion}"
-    const val fragmentKtx =
-        "androidx.navigation:navigation-fragment-ktx:${Version.fragmentKtxVersion}"
+    const val navigationKtx =
+        "androidx.navigation:navigation-fragment-ktx:${Version.navigationKtxVersion}"
+    const val fragmentKts = "androidx.fragment:fragment-ktx:${Version.fragmentKtxVersion}"
     const val liveDataKtx =
         "androidx.lifecycle:lifecycle-livedata-ktx:${Version.liveDataKtxVersion}"
 }

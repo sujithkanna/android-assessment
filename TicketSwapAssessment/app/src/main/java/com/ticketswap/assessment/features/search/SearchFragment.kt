@@ -1,6 +1,7 @@
 package com.ticketswap.assessment.features.search
 
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +19,6 @@ import com.ticketswap.assessment.databinding.FragmentSearchBinding
 import com.ticketswap.assessment.features.search.medialist.MediaListTabFragment
 import com.ticketswap.assessment.utils.*
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class SearchFragment : Fragment() {
@@ -57,11 +57,10 @@ class SearchFragment : Fragment() {
         }
 
         binder.searchField.addTextChangedListener(onTextChanged = { text, _, _, _ ->
-            searchViewModel.search(text.toString())
+            searchViewModel.search(text.toString().trim())
         })
 
         binder.searchViewpager.adapter = SearchViewpagerAdapter(this, types)
-
         binder.searchViewpager.doOnPreDraw {
             startPostponedEnterTransition()
         }
