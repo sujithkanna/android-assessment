@@ -5,8 +5,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.ticketswap.assessment.databinding.InflaterMediaDetailsItemBinding
 
-class MediaDetailsAdapter(private val details: List<Media>) :
+class MediaDetailsAdapter :
     RecyclerView.Adapter<MediaDetailsViewHolder>() {
+
+    private val details = ArrayList<Media>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MediaDetailsViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -21,6 +23,12 @@ class MediaDetailsAdapter(private val details: List<Media>) :
     }
 
     override fun getItemCount() = details.size
+
+    fun setDetails(details: List<Media>) {
+        this.details.clear()
+        this.details.addAll(details)
+        notifyItemRangeInserted(0, details.size)
+    }
 }
 
 data class Media(val title: String, val details: String)

@@ -2,7 +2,6 @@ package com.ticketswap.assessment.features.search.media
 
 import android.animation.ObjectAnimator
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,9 +11,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.squareup.picasso.Picasso
 import com.ticketswap.assessment.R
 import com.ticketswap.assessment.databinding.FragmentTrackBinding
-import com.ticketswap.assessment.features.search.medialist.TrackViewHolder
 import com.ticketswap.assessment.features.search.medialist.resolveImageForItem
-import com.ticketswap.assessment.utils.*
+import com.ticketswap.assessment.utils.TransitionListener
+import com.ticketswap.assessment.utils.dpToPx
+import com.ticketswap.assessment.utils.into
+import com.ticketswap.assessment.utils.rounded
 import com.ticketswap.assessment.widgets.MarginDecoration
 import com.ticketswap.assessment.widgets.transitions.RadiusTransition
 
@@ -35,33 +36,21 @@ class TrackFragment : MediaFragment() {
         setupAnimations()
         loadCoverImage()
 
-
-
+        val mediaAdapter = MediaDetailsAdapter()
         binder.name.text = mediaItem.name
         binder.details.apply {
-            adapter = MediaDetailsAdapter(prepareInfoList())
+            adapter = mediaAdapter
             layoutManager = LinearLayoutManager(context)
             addItemDecoration(MarginDecoration(25.dpToPx().toInt()))
         }
-    }
 
-    private fun prepareInfoList(): List<Media> {
-        val details = arrayListOf<Media>()
-        details.add(Media("Album", mediaItem.album?.name ?: "Unknown"))
-        val artists = TrackViewHolder.getArtists(mediaItem)
-        if (!artists.isNullOrEmpty()) {
-            details.add(Media("Artist", artists.joinToString(", ")))
-        }
-        val duration = mediaItem.duration_ms.toTimerString()
-        if (duration != null) {
-            details.add(Media("Duration", duration))
-        }
-        return details
-    }
+        viewModel.detailsList.observe(viewLifecycleOwner, {
+            mediaAdapter.setDetails(it)
+        })
 
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.i("TestTest", "View destroyed")
+        viewModel.setMediaItem(mediaItem)
+
+        if (savedInstanceState != null) revealDetails()
     }
 
     private fun loadCoverImage() {
@@ -88,12 +77,16 @@ class TrackFragment : MediaFragment() {
 
         sharedElementEnterTransition = RadiusTransition.toSquare(requireContext()).apply {
             addListener(TransitionListener(
-                onTransitionEnd = {
-                    ObjectAnimator.ofFloat(binder.name, View.ALPHA, 0f, 1f).start()
-                    ObjectAnimator.ofFloat(binder.details, View.ALPHA, 0f, 1f).start()
-                }
+                onTransitionEnd = { revealDetails() }
             ))
         }
         sharedElementReturnTransition = RadiusTransition.toCircle(requireContext())
+    }
+
+    private fun revealDetails() {
+        ObjectAnimator.ofFloat(binder.play, View.ALPHA, 0f, 1f).start()
+        ObjectAnimator.ofFloat(binder.name, View.ALPHA, 0f, 1f).start()
+        ObjectAnimator.ofFloat(binder.details, View.ALPHA, 0f, 1f).start()
+        ObjectAnimator.ofFloat(binder.nameBackground, View.ALPHA, 0f, 1f).start()
     }
 }
