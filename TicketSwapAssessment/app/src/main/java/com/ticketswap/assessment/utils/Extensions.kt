@@ -8,7 +8,6 @@ import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.ShapeDrawable
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
@@ -19,6 +18,7 @@ import androidx.core.graphics.drawable.RoundedBitmapDrawable
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
+
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.moshi.Moshi
 import com.squareup.picasso.Picasso
@@ -42,7 +42,7 @@ import kotlin.coroutines.resumeWithException
 fun <T> MutableLiveData<T>.asLiveData(): LiveData<T> = this
 
 fun <T> LiveData<T>.observeNotNull(lifecycleOwner: LifecycleOwner, observer: Observer<T>) {
-    this.observe(lifecycleOwner, { it?.let { it1 -> observer.onChanged(it1) } })
+    this.observe(lifecycleOwner, Observer { it?.let { it1 -> observer.onChanged(it1) } })
 }
 
 fun <T> LiveData<T>.observeOnce(lifecycleOwner: LifecycleOwner, observer: Observer<T>) {
