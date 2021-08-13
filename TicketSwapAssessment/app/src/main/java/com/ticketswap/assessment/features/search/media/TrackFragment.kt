@@ -48,6 +48,16 @@ class TrackFragment : MediaFragment() {
             mediaAdapter.setDetails(it)
         })
 
+        viewModel.showPlay.observe(viewLifecycleOwner, {
+            binder.play.visibility = if (it) View.VISIBLE else View.GONE
+        })
+
+        viewModel.openSpotifyAction.observe(viewLifecycleOwner, { startActivity(it) })
+
+        binder.play.setOnClickListener {
+            viewModel.onClickPlay()
+        }
+
         viewModel.setMediaItem(mediaItem)
 
         if (savedInstanceState != null) revealDetails()

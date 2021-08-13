@@ -23,7 +23,12 @@ class SearchViewModel @Inject constructor(private val repository: SearchReposito
 
     private val searchDebounce by lazy {
         throttleLatest<String>(TEXT_CHANGE_DEBOUNCE, viewModelScope) {
-            if (it.isNotEmpty()) searchTriggerLive.search(it)
+            if (it.isNotEmpty()) {
+                searchTriggerLive.search(it)
+            } else {
+                _artistList.clear()
+                _tracksList.clear()
+            }
         }
     }
 
