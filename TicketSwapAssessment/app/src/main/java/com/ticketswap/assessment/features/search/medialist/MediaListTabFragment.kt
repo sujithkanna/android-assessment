@@ -1,7 +1,6 @@
 package com.ticketswap.assessment.features.search.medialist
 
 import android.os.Bundle
-import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,23 +41,14 @@ class MediaListTabFragment : Fragment(), MediaClickListener {
         return binder.root
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        if (isInLayout) {
-            outState.putParcelable(
-                SEARCH_LIST_STATE,
-                binder.root.layoutManager?.onSaveInstanceState()
-            )
-        }
+    override fun onPause() {
+        super.onPause()
+        searchViewModel.scrollState = binder.root.layoutManager?.onSaveInstanceState()
     }
 
-    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        super.onViewStateRestored(savedInstanceState)
-        if (isInLayout) {
-            savedInstanceState?.getParcelable<Parcelable>(SEARCH_LIST_STATE).let {
-                binder.root.layoutManager?.onRestoreInstanceState(it)
-            }
-        }
+    override fun onResume() {
+        super.onResume()
+        binder.root.layoutManager?.onRestoreInstanceState(searchViewModel.scrollState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -1,5 +1,6 @@
 package com.ticketswap.assessment.features.search
 
+import android.os.Parcelable
 import androidx.lifecycle.*
 import com.ticketswap.assessment.features.search.medialist.MediaListTabFragment.*
 import com.ticketswap.assessment.features.search.medialist.MediaListTabFragment.MediaType.*
@@ -14,6 +15,8 @@ import javax.inject.Inject
 class SearchViewModel @Inject constructor(private val repository: SearchRepository) : ViewModel() {
 
     fun isLoggedIn() = repository.isLoggedIn()
+
+    var scrollState: Parcelable? = null
 
     // Artist list will be added here
     private val _artistList = AccumulatedListLivedata<Item>()
