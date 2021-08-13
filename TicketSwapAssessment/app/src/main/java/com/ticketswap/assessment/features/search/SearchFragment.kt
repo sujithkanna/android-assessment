@@ -11,6 +11,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayoutMediator
 import com.ticketswap.assessment.R
@@ -19,6 +20,7 @@ import com.ticketswap.assessment.databinding.FragmentSearchBinding
 import com.ticketswap.assessment.features.search.medialist.MediaListTabFragment
 import com.ticketswap.assessment.utils.*
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.GlobalScope
 
 @AndroidEntryPoint
 class SearchFragment : Fragment() {
@@ -31,6 +33,12 @@ class SearchFragment : Fragment() {
 
     private val types by lazy {
         MediaListTabFragment.MediaType.values()
+    }
+
+    private val searchDebounce by lazy {
+        throttleLatest<String>(SearchViewModel.TEXT_CHANGE_DEBOUNCE, searchViewModel.viewModelScope) {
+            searchViewModel.search(it)
+        }
     }
 
     private val backToExit by lazy {
@@ -57,7 +65,8 @@ class SearchFragment : Fragment() {
         }
 
         binder.searchField.addTextChangedListener(onTextChanged = { text, _, _, _ ->
-            searchViewModel.search(text.toString().trim())
+            searchDebounce.invoke(text.toString().trim())
+
         })
 
         binder.searchViewpager.adapter = SearchViewpagerAdapter(this, types)

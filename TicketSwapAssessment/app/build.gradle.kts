@@ -49,6 +49,10 @@ android {
     buildFeatures {
         viewBinding = true
     }
+
+    testOptions {
+        unitTests.isReturnDefaultValues = true
+    }
 }
 
 dependencies {
@@ -88,15 +92,17 @@ dependencies {
     // Spotify
     implementation(Spotify.spotify)
 
-    // Facebool
+    // Facebook
     implementation(Facebook.shimmer)
 
     //Test
     testImplementation(TestLibs.junit)
-    androidTestImplementation(TestLibs.runner)
+    testImplementation(TestLibs.truth)
     testImplementation(TestLibs.mockito)
-    testImplementation(TestLibs.mockito_kotlin)
+    androidTestImplementation(TestLibs.runner)
     androidTestImplementation(TestLibs.espresso)
+    testImplementation(TestLibs.coroutinesTest)
+    testImplementation(TestLibs.coroutinesCoreTest)
 }
 
 fun com.android.build.gradle.internal.dsl.BaseFlavor.buildConfigBoolean(

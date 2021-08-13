@@ -12,9 +12,10 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class SearchViewModel @Inject constructor(private val repository: SearchRepository) : ViewModel() {
+class SearchViewModel @Inject constructor(private val repositoryImpl: SearchRepository) :
+    ViewModel() {
 
-    fun isLoggedIn() = repository.isLoggedIn()
+    fun isLoggedIn() = repositoryImpl.isLoggedIn()
 
     var scrollState: Parcelable? = null
 
@@ -24,23 +25,12 @@ class SearchViewModel @Inject constructor(private val repository: SearchReposito
     // Track list will be added here
     private val _tracksList = AccumulatedListLivedata<Item>()
 
-    private val searchDebounce by lazy {
-        throttleLatest<String>(TEXT_CHANGE_DEBOUNCE, viewModelScope) {
-            if (it.isNotEmpty()) {
-                searchTriggerLive.search(it)
-            } else {
-                _artistList.clear()
-                _tracksList.clear()
-            }
-        }
-    }
-
     private val searchTriggerLive by lazy {
         SearchPaginatedLiveData(setOf(ARTIST, TRACK))
     }
 
     val searchResult = Transformations.switchMap(searchTriggerLive) { query ->
-        return@switchMap repository.searchSong(query).hookToResponse {
+        repositoryImpl.searchSong(query).hookToResponse {
             val accumulate = query.offset != 0
             if (query.type.contains(TRACK)) {
                 processSearchResult(TRACK, it.tracks?.items, accumulate, _tracksList)
@@ -64,7 +54,14 @@ class SearchViewModel @Inject constructor(private val repository: SearchReposito
         }
     }
 
-    fun search(query: String) = searchDebounce.invoke(query)
+    fun search(query: String)  {
+        if (query.isNotEmpty()) {
+            searchTriggerLive.search(query)
+        } else {
+            _artistList.clear()
+            _tracksList.clear()
+        }
+    }
 
     fun subscribeTo(type: MediaType) = when (type) {
         TRACK -> _tracksList

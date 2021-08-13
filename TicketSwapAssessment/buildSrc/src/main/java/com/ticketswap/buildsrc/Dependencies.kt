@@ -16,7 +16,14 @@ object Version {
     const val hiltVersion = "2.35"
 
     // Unit tests
-    const val mockitoVersion = "2.13.0"
+
+    const val junit = "4.12"
+    const val truth = "1.1.3"
+    const val runner = "1.0.1"
+    const val mockito = "2.25.1"
+    const val espresso = "3.0.1"
+    const val coroutinesTest = "1.5.1"
+    const val coroutinesCoreTest = "2.1.0"
 
     //Rx Versions
     const val rxJava2 = "2.1.9"
@@ -76,9 +83,6 @@ object Spotify {
 
 object Square {
     const val picasso = "com.squareup.picasso:picasso:${Version.picassoVersion}"
-    const val retrofit = "com.squareup.retrofit2:retrofit:${Version.retrofitVersion}"
-    const val moshi_retrofit =
-        "com.squareup.retrofit2:converter-moshi:${Version.moshiConverterVersion}"
     const val rxadapter =
         "com.jakewharton.retrofit:retrofit2-rxjava2-adapter:${Version.rxAdapterVersion}"
     const val moshi = "com.squareup.moshi:moshi:${Version.moshiVersion}"
@@ -105,9 +109,11 @@ object Facebook {
 }
 
 object TestLibs {
-    const val junit = "junit:junit:4.12"
-    const val runner = "com.android.support.test:runner:1.0.1"
-    const val mockito = "org.mockito:mockito-core:${Version.mockitoVersion}"
-    const val mockito_kotlin = "com.nhaarman:mockito-kotlin:1.5.0"
-    const val espresso = "com.android.support.test.espresso:espresso-core:3.0.1"
+    const val junit = "junit:junit:${Version.junit}"
+    const val truth = "com.google.truth:truth:${Version.truth}"
+    const val runner = "com.android.support.test:runner:${Version.runner}"
+    const val mockito = "org.mockito:mockito-core:${Version.mockito}"
+    const val espresso = "com.android.support.test.espresso:espresso-core:${Version.espresso}"
+    const val coroutinesTest = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Version.coroutinesTest}"
+    const val coroutinesCoreTest = "androidx.arch.core:core-testing:${Version.coroutinesCoreTest}"
 }

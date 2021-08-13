@@ -9,19 +9,30 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 
-class SearchRepository @Inject constructor(
+class SearchRepositoryImpl @Inject constructor(
     private val userManager: UserManager,
     private val spotifyApi: SpotifyApi
-) {
+) : SearchRepository() {
 
-    fun isLoggedIn() = !userManager.spotifyAuthToken.isNullOrBlank()
+    override fun isLoggedIn() = !userManager.spotifyAuthToken.isNullOrBlank()
 
     @Throws(Exception::class)
-    fun searchSong(query: SearchQuery): Flow<Resource<out SearchResponse?>> =
+    override fun searchSong(query: SearchQuery): Flow<Resource<out SearchResponse?>> =
         networkBoundResource(
-            fetch = { spotifyApi.search(query.offset, query.query,
-                query.type.joinToString(",") { it.value }) },
+            fetch = {
+                spotifyApi.search(query.offset, query.query,
+                    query.type.joinToString(",") { it.value })
+            },
             query = { null },
             saveFetchResult = { response -> response }
         )
+}
+
+abstract class SearchRepository {
+
+    abstract fun isLoggedIn(): Boolean
+
+    @Throws(Exception::class)
+    abstract fun searchSong(query: SearchQuery): Flow<Resource<out SearchResponse?>>
+    
 }
